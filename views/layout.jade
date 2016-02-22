@@ -27,11 +27,12 @@ html(lang='en')
             #page-content-wrapper
                 .container-fluid
                     .row
-                        .col-lg-12
-                            block content
-                                h1 qGen
+                        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-xs-12.col-cs-offset-0
+                            block header
+                                h1= title
                                 h4 Physics Problem Generator
                                 hr
+                            block content
                                 p
                                     | This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.
                                 p
