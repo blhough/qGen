@@ -16,7 +16,7 @@ html(lang='en')
                 title Simple Sidebar - Start Bootstrap Template
         block includes
             // Bootstrap Core CSS
-            link(rel="stylesheet" ,href='/stylesheets/bootstrap.min.css',crossorigin="anonymous")
+            link(rel="stylesheet" ,href='/stylesheets/bootstrap.css',crossorigin="anonymous")
             // Custom CSS
             link(href='/stylesheets/sidebar.css', rel='stylesheet')
     body
@@ -27,8 +27,8 @@ html(lang='en')
             #page-content-wrapper
                 .container-fluid
                     .row
-                        block main-content
-                            .col-lg-12
+                        .col-lg-12
+                            block content
                                 h1 qGen
                                 h4 Physics Problem Generator
                                 hr
