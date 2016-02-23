@@ -1,7 +1,13 @@
 extends layout.jade
 
 block content
-    for question in questions
-        .panel.panel-default
-            .panel-body
-                =question
+    form.form-inline
+        .form-group
+            label Chapter: 
+            select.form-control
+                option(value='volvo') Volvo
+                option(value='saab') Saab
+                option(value='opel') Opel
+                option(value='audi') Audi             
+            button.btn.btn-primary(type='button') Generate
+            button.btn.btn-primary(type='button') Generate

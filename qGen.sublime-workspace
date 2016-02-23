@@ -1,0 +1,527 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"s",
+				"successful"
+			],
+			[
+				"min",
+				"miniMaxNode"
+			],
+			[
+				"ma",
+				"material_science"
+			],
+			[
+				"st",
+				"static_pages"
+			],
+			[
+				"ca",
+				"category"
+			],
+			[
+				"border-le",
+				"border-left-width"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "pci",
+		"selected_items":
+		[
+			[
+				"pci",
+				"Package Control: Install Package"
+			],
+			[
+				"find",
+				"FindKeyConflicts: All Conflicts"
+			],
+			[
+				"pc",
+				"Package Control: Remove Package"
+			],
+			[
+				"pac",
+				"Package Control: Add Channel"
+			]
+		],
+		"width": 512.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"FindKeyConflicts: All Key Maps to Quick Panel`",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Dropbox/_Workspace/qgen"
+	],
+	"file_history":
+	[
+		"/D/Dropbox/_Workspace/private/Overstack/README.md",
+		"/D/Dropbox/_Workspace/Overstack/README.md",
+		"/D/Desktop/motors.html",
+		"/D/Dropbox/_Workspace/SRJC_CSC/micromouse/.git/COMMIT_EDITMSG",
+		"/D/Dropbox/_Workspace/SRJC_CSC/micromouse/.git/rebase-merge/git-rebase-todo",
+		"/D/Dropbox/_Workspace/SRJC_CSC/micromouse/MicroMouse-2016.vcxproj.filters",
+		"/D/Dropbox/_Workspace/SRJC_CSC/micromouse/MicroMouse-2016.vcxproj",
+		"/D/Dropbox/_Workspace/SRJC_CSC/micromouse/MicroMouse-2016.sln",
+		"/D/Dropbox/_Workspace/SRJC_CSC/micromouse/.gitignore",
+		"/D/Dropbox/_Workspace/qgen/config/seed.json",
+		"/D/Dropbox/_Workspace/qgen/private/problems.txt",
+		"/D/Dropbox/_Workspace/qgen/app/router.js",
+		"/D/Dropbox/_Workspace/qgen/.gitignore",
+		"/D/Dropbox/_Workspace/qgen/app/controllers/index_controller.js",
+		"/D/Downloads/sketch_2Dmapping_from_polar_coordinatewithanrduino_yikealo_oran.pde",
+		"/D/Dropbox/_Workspace/SRJC_CSC/micromouse/README.md",
+		"/D/Dropbox/_Workspace/SRJC_CSC/MicroMouse-2016/MicroMouse-2016.vcxproj",
+		"/D/Dropbox/_Workspace/SRJC_CSC/MicroMouse-2016/.gitignore",
+		"/D/Desktop/Release v4/jacob.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/.git/rebase-merge/git-rebase-todo",
+		"/D/Dropbox/_Workspace/SuperT3/iw3ksc4k.oei.txt",
+		"/D/Dropbox/_Workspace/SuperT3/1rjlr2r4.seg.txt",
+		"/D/Dropbox/_Workspace/SuperT3/.git/COMMIT_EDITMSG",
+		"/D/Dropbox/_Workspace/SuperT3/l4hp5xbk.liw.txt",
+		"/D/Dropbox/_Workspace/SuperT3/04bzb43v.tml.txt",
+		"/D/Dropbox/_Workspace/SuperT3/zpyukdve.fdg.txt",
+		"/D/Dropbox/_Workspace/SuperT3/z2txvq4r.0co.txt",
+		"/D/Dropbox/_Workspace/SuperT3/q1fh5nbk.sxq.txt",
+		"/D/Dropbox/_Workspace/SuperT3/yamus1ls.f3z.txt",
+		"/D/Dropbox/_Workspace/SuperT3/uz140foz.zfs.txt",
+		"/D/Dropbox/_Workspace/SuperT3/u12x5tpq.0ws.txt",
+		"/D/Desktop/Release v4/nik",
+		"/D/Desktop/Release v4/mark",
+		"/D/Desktop/Release v4/tushar",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/b.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/ray.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/pam.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/board2.ttt",
+		"/D/Desktop/Release v3/pam.ttt",
+		"/D/Desktop/Release v3/ray.ttt",
+		"/D/Desktop/Release v3/emily.ttt",
+		"/D/Desktop/Release v3/hawkay",
+		"/D/Desktop/Release v3/hawkay.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/leigh.ttt",
+		"/D/Desktop/Release v3/hunter.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/board.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/board2.txt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/b2.txt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/brennan.txt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/board3.txt",
+		"/D/Desktop/Debug/b.txt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/tom.txt",
+		"/D/Desktop/Debug/drew.txt",
+		"/D/Desktop/Debug/tom.txt",
+		"/D/Desktop/Debug/ref.txt",
+		"/D/Desktop/Release v2/b - Copy.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/ref.ttt",
+		"/D/Desktop/Release v2/b.ttt",
+		"/D/Desktop/Debug/b2.txt",
+		"/D/Downloads/LiquidTWI-1.5.1/keywords.txt",
+		"/D/Downloads/LiquidTWI-1.5.1/examples/HelloWorld_i2c/HelloWorld_i2c.pde",
+		"/D/Downloads/F15.php",
+		"/D/Downloads/F15.csv",
+		"/D/Downloads/F15 (1).csv",
+		"/D/Dropbox/_Workspace/_JavaScript/Test2/js/Main-1.1.0.js",
+		"/D/Desktop/Debug/leigh2.txt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/log",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/brennan.ttt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/leigh2",
+		"/D/Desktop/Debug/board3.txt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/leigh.txt",
+		"/D/Dropbox/_Workspace/SuperT3/private/MiniMax/MiniMax/board.txt",
+		"/D/Drive/_CS11/Sort",
+		"/D/Dropbox/_Workspace/SuperT3/Minimax psuedo code.js",
+		"/D/Dropbox/_Workspace/Scheduler/build/js/main.js",
+		"/D/Downloads/Untitled spreadsheet - Sheet1.tsv",
+		"/D/Downloads/Untitled spreadsheet - Sheet1.csv",
+		"/D/Downloads/Untitled spreadsheet - Sheet1 (1).csv",
+		"/D/Dropbox/_Workspace/Younes2/db/schema.rb",
+		"/D/Dropbox/_Workspace/Younes2/db/migrate/20151105061423_create_items.rb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/items/index.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/items/show.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/app/controllers/items_controller.rb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/layouts/application.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/static_pages/home.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/layouts/_footer.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/static_pages/material_science.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/static_pages/_item_short.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/layouts/_header.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/db/seeds.rb",
+		"/D/Dropbox/_Workspace/Younes2/app/views/items/_form.html.erb",
+		"/D/Dropbox/_Workspace/Younes2/db/migrate/20151105055740_add_description_to_items.rb",
+		"/D/Dropbox/_Workspace/Younes2/.gitignore",
+		"/D/Dropbox/_Workspace/_JavaScript/Test2/php/scraper.php",
+		"/D/Dropbox/_Workspace/_JavaScript/Test2/php/crawler.php",
+		"/D/Dropbox/_Workspace/_php/send_form_email.php",
+		"/D/Dropbox/_Workspace/_JavaScript/Test2/php/schedule-up.php",
+		"/D/Downloads/startbootstrap-small-business-1.0.3/startbootstrap-small-business-1.0.3/index.html",
+		"/D/Downloads/startbootstrap-small-business-1.0.3/startbootstrap-small-business-1.0.3/js/jquery.js",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/FindKeyConflicts/README.md",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/ERBAutocomplete/Default (Windows).sublime-keymap",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/BeautifyRuby/Default (Windows).sublime-keymap",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/HTML-CSS-JS Prettify/.jsbeautifyrc",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/User/HTMLBeautify.sublime-settings",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/D/Dropbox/_Workspace/Younes/config/routes.rb",
+		"/D/Dropbox/_Workspace/Younes/app/views/layouts/application.html.erb",
+		"/D/Dropbox/_Workspace/Younes/app/assets/stylesheets/static_pages.css.scss",
+		"/D/Dropbox/_Workspace/Younes/app/assets/javascripts/application.js",
+		"/D/Dropbox/_Workspace/CC_recipe_test/app/assets/stylesheets/application.css.scss",
+		"/D/Dropbox/_Workspace/CC_recipe_test/app/views/layouts/application.html.erb",
+		"/D/Dropbox/_Workspace/CC_recipe_test/app/views/recipes/new.html.erb",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/HTMLBeautify/HTMLBeautify.sublime-settings",
+		"/C/Users/benhu/AppData/Roaming/Sublime Text 3/Packages/HTML-CSS-JS Prettify/HTMLPrettify.sublime-settings",
+		"/D/Dropbox/_Workspace/CC_recipe_test/Gemfile",
+		"/C/Users/benhu/Downloads/CensusData.h",
+		"/C/Users/benhu/Downloads/hash.cpp",
+		"/D/Downloads/a10_1.cpp",
+		"/D/Dropbox/_Workspace/_JavaScript/Test2/index.html",
+		"/D/Dropbox/_Workspace/_JavaScript/Test2/css/style.css",
+		"/D/Dropbox/_Workspace/_JavaScript/Test2/php/spy.php",
+		"/C/Users/benhu/Downloads/CensusDataSorts.cpp",
+		"/C/Users/benhu/Downloads/LabWork_2.s",
+		"/D/Dropbox/_Workspace/_php/scraper/class.php",
+		"/D/Dropbox/_Workspace/_php/scraper/scraper.php"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"D:\\Dropbox\\_Workspace\\CC_recipe_test"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"<sup>.*</sup>",
+			"T",
+			"O",
+			"X",
+			"_",
+			"new node",
+			"newnode",
+			"newNode",
+			"#1168",
+			"#2491",
+			"#2492",
+			"#1144",
+			"#1143",
+			"#1166",
+			"#1167",
+			"#2495",
+			"#2494",
+			"#2493",
+			"#2492",
+			"#2491",
+			"#1168",
+			"#1169",
+			"000001E69FA805C0",
+			"000001E69FA7CD30",
+			"000001E69FA7C0F0",
+			"000001E69FA7B830",
+			"000001E69FA7CD30",
+			"000001E69FA81AC0",
+			"000001E69FA805C0",
+			"000001E69FA80160",
+			"000001E69FA805C0",
+			"000001E69FA7B830",
+			"000001E69FA81AC0",
+			"000001E92E4FFC20",
+			"000001E92E4FEF00",
+			"000001E92E500080",
+			"000001E92E4FFC20",
+			"000002216C25FBC0",
+			"000002243EC00E00",
+			"000002243EC00B60",
+			"000002243EBFC690",
+			"000002243EC00E00",
+			"AI",
+			"N",
+			"O",
+			"X",
+			"\\n",
+			"#",
+			"T",
+			"O",
+			"X",
+			"+",
+			"\\n",
+			"(\\d\\d)\\s",
+			"63",
+			"87",
+			"\n\n\n\n\n\n",
+			"(.*?)\\t(.*?)\\t(.*?)\\t(.*?)\\t(.*?)\\t(.*?)$\n",
+			"\"",
+			"shortDecription",
+			"(Test Item \\d\\d?)",
+			"(.*?)\\t(.*?)\\t(.*?)\\t(.*?)\\t(.*?)\\t(.*?)$",
+			"Name	Category	Price	Short Description	Description	Part Number",
+			"^\\n",
+			"('.*?\\/(.*?)')",
+			"item 1",
+			"4 col-sm-6",
+			"\n                    <li>\n                        <a href=\"#\">Materials Science</a>\n                    </li>",
+			"md-4\"",
+			"place",
+			"image",
+			">\n",
+			"scope",
+			"bootstrap",
+			"change",
+			"save",
+			"semester"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"",
+			"O",
+			"X",
+			"T",
+			"-",
+			"O",
+			"X",
+			"N",
+			"",
+			"-",
+			"_",
+			" ",
+			"O",
+			"X",
+			"T",
+			": \\n",
+			"-\\n",
+			"($1)",
+			"Item.create(name: '$1', category: $2 , price: $3, shortDescription: '$4', description: '$5', partNumber: '$6')\\n",
+			"Item.create(name: '$1', category: $2 , price: $3, shortDescription: '$4', description: '$5', partNumber: '$6')",
+			"'$1'",
+			"Item.create(name: $1, category: $2 , price: $3, shortDecription: '$4', description: '$5', partNumber: '$5')",
+			"",
+			"'$2', to: $1",
+			"$2, to: $1",
+			"md-4 col-sm-6\"",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "qGen.sublime-project",
+	"replace":
+	{
+		"height": 66.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"seed",
+				"config\\seed.json"
+			],
+			[
+				"itemshort",
+				"app\\views\\static_pages\\_item_short.html.erb"
+			],
+			[
+				"itemshow",
+				"app\\views\\items\\show.html.erb"
+			],
+			[
+				"itemsho",
+				"app\\views\\static_pages\\_item_short.html.erb"
+			],
+			[
+				"tag",
+				"app\\views\\layouts\\_tagline.html.erb"
+			],
+			[
+				"count",
+				"app\\views\\static_pages\\consulting_services.html.erb"
+			],
+			[
+				"hom",
+				"app\\views\\static_pages\\home.html.erb"
+			],
+			[
+				"head",
+				"app\\views\\layouts\\_header.html.erb"
+			],
+			[
+				"homeht",
+				"app\\views\\static_pages\\home.html.erb"
+			],
+			[
+				"appht",
+				"app\\views\\layouts\\application.html.erb"
+			],
+			[
+				"mat",
+				"app\\views\\static_pages\\material_science.html.erb"
+			],
+			[
+				"aphtm",
+				"app\\views\\layouts\\application.html.erb"
+			],
+			[
+				"route",
+				"config\\routes.rb"
+			],
+			[
+				"statco",
+				"app\\controllers\\static_pages_controller.rb"
+			],
+			[
+				"statho",
+				"app\\views\\static_pages\\home.html.erb"
+			],
+			[
+				"home",
+				"app\\views\\static_pages\\home.html.erb"
+			],
+			[
+				"inde",
+				"app\\views\\items\\index.html.erb"
+			],
+			[
+				"rou",
+				"config\\routes.rb"
+			],
+			[
+				"appler",
+				"app\\views\\layouts\\application.html.erb"
+			],
+			[
+				"hea",
+				"app\\views\\layouts\\_header.html.erb"
+			],
+			[
+				"ap",
+				"app\\views\\layouts\\application.html.erb"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 212.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
