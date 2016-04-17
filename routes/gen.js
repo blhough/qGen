@@ -5,7 +5,7 @@ var router = express.Router();
 var title = "Generate";
 
 var question = {
-    "template": "A {object1|[water_vehicle,ball]} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,20),unit:velocity}. A sudden gust of wind gives the {object1|temp} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360):units:degree} north of east. What is the {object1|temp}'s velocity {time|(2,30),unit:second} when the wind stops?",
+    "template": "A {object1|{[water_vehicle,ball],temp:{num:[[a66,bb3,345],[200,22,2323],343],unit:mass}}} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,20),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360):units:degree} north of east. What is the {object1|temp}'s velocity {time|(2,30),unit:second} when the wind stops?",
     "text": "",
     "subs": {},
     "seed": 20045,
@@ -47,10 +47,28 @@ function extractSubs( subs, template )
         {
             var subText = subName_reg.exec( template.substring( startIndex, index + 1 ) );
             subName = subText[1];
-            parseObjectSub( subText[3], subs[subName] = {});
+
+            if ( typeof subText[3] !== "undefined" && typeof subs[subName] === "undefined" )
+            {
+                subs[subName] = {};
+                parseObjectSub( subText[3], subs, subName );
+            }
+            else if ( typeof subText[3] === "undefined" && typeof subs[subName] !== "undefined" )
+            {
+                continue;
+            }
+            else
+            {
+                console.error( "Substitution undefined or redefined" );
+            }
 
             subComplete = false;
         }
+    }
+
+    if ( depth != 0 )
+    {
+        console.error( "unclosed brace in question template" );
     }
 
     return subs;
@@ -60,17 +78,36 @@ function extractSubs( subs, template )
 /**
  * @param {string} sub
  * @param {Object} obj
+ * @param {string} name
  */
-function parseSubs( sub, obj )
+function parseSubs( sub, obj, name )
 {
     var subArray = commaSplit( sub );
 
     for ( var i = 0; i < subArray.length; i++ )
     {
         var extraction = extractVarName( subArray[i] );
+        var subType = parseSubType( extraction.sub );
 
-        obj[extraction.varName] = {};
-        redirectSubType( parseSubType( extraction.sub ), extraction.sub, obj, extraction.varName );
+        if ( subType == "[" )
+        {
+            if ( typeof obj[name] === "object" )
+            {
+                obj[name][extraction.varName] = "";
+                redirectSubType( subType, extraction.sub, obj[name], extraction.varName );
+            }
+            else
+            {
+                redirectSubType( subType, extraction.sub, obj[name], extraction.varName );
+            }
+            //  obj[name] = {};
+            //  redirectSubType( subType, extraction.sub, obj, name );
+        }
+        else
+        {
+            obj[name][extraction.varName] = {};
+            redirectSubType( subType, extraction.sub, obj[name], extraction.varName );
+        }
     }
 };
 
@@ -80,7 +117,7 @@ function parseSubs( sub, obj )
  */
 function extractVarName( sub )
 {
-    var varName_reg = /([^\{\}\(\)\[\]\,\:\<\>\']+?):/
+    var varName_reg = /(^[^\{\}\(\)\[\]\,\:\<\>\']+?):/
     var varName = varName_reg.exec( sub );
     if ( varName == null )
     {
@@ -135,10 +172,10 @@ function redirectSubType( subType, sub, obj, name )
     switch ( subType )
     {
         case "{": // object
-            parseObjecSub( trimBracket( sub ), obj );
+            parseObjectSub( trimBracket( sub ), obj, name );
             break;
         case "[": //choose
-            parseChoosetSub( trimBracket( sub ), obj, name );
+            parseChooseSub( trimBracket( sub ), obj, name );
             break;
         case "<": //tbd
             obj[name] = "tbd - " + sub;
@@ -165,7 +202,7 @@ function redirectSubType( subType, sub, obj, name )
  */
 function parseObjectSub( sub, obj, name )
 {
-    makeObject( sub, obj );
+    makeObject( sub, obj, name );
 };
 
 
@@ -174,7 +211,7 @@ function parseObjectSub( sub, obj, name )
  * @param {Object} obj
  * @param {string} name 
  */
-function parseChoosetSub( sub, obj, name )
+function parseChooseSub( sub, obj, name )
 {
     var choices = commaSplit( sub );
     makeChoice( choices, obj, name );
@@ -213,11 +250,11 @@ function parseSubstituteSub( sub )
  * @param {string} sub
  * @param {Object} obj
  */
-function makeObject( sub, obj )
+function makeObject( sub, obj, name )
 {
     // grab object name
     //
-    parseSubs( sub, obj )
+    parseSubs( sub, obj, name )
 
 }
 
@@ -244,7 +281,22 @@ function makeChoice( choices, obj, name )
  */
 function trimBracket( text )
 {
-    return text.substring( 1, text.length - 1 ); //trim brackets
+    var char = text.charAt( 0 );
+
+    switch ( char )
+    {
+        case "{":
+        case "[":
+        case "<":
+        case "(":
+        case "'":
+            text = text.substring( 1, text.length - 1 ); //trim brackets
+            break;
+        default:
+            break;
+    }
+
+    return text;
 }
 
 
@@ -295,6 +347,7 @@ function commaSplit( sub )
                 {
                     subArray[index++] = sub.substring( 0, i );
                     sub = sub.substring( i + 1, sub.length );
+                    i = -1;
                 }
                 break;
         }
