@@ -1,9 +1,10 @@
-form.form-inline
-    .form-group
-        label Chapter: 
-        select.form-control
-            option(value='2') 2
-            option(value='3') 3
-            option(value='4') 4
-            option(value='5') 5             
-        button.btn.btn-primary(type='button') Generate
+.row
+    .col
+        form.form-inline
+            .form-group
+                select.form-control
+                    option(value='2') Chapter 2
+                    option(value='3') Chapter 3
+                    option(value='4') Chapter 4
+                    option(value='5') Chapter 5             
+                button.btn.btn-primary(type='button' onclick='generate()') Generate

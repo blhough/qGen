@@ -2,7 +2,7 @@ var express = require( 'express' );
 var router = express.Router();
 //var gen = require('/helpers/generator');
 
-var title = "Generate";
+var title = "qGen | Generate";
 
 var question = {
     "template": "A {object1|[water_vehicle,'ball']} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:degree} north of east. What is the {object1}'s velocity {time|(2,30),unit:second} when the wind stops?",
@@ -419,7 +419,8 @@ router.get( '/:category/:type', function ( req, res, next )
 /* GET home page. */
 router.get( '/:chapter', function ( req, res, next )
 {
-    res.render( 'generator', { title: title });
+    console.log( extractSubs( question.subs, question.template ) );
+    res.send(question.text);
     console.log( req.params.category );
 });
 
@@ -429,5 +430,7 @@ router.get( '/', function ( req, res, next )
 {
     res.render( 'generator', { title: title });
 });
+
+
 
 module.exports = router;

@@ -16,8 +16,8 @@ html(lang='en')
                 title Simple Sidebar - Start Bootstrap Template
         block includes
             // Bootstrap Core CSS
-            //link(rel="stylesheet" ,href='/stylesheets/bootstrap.css',crossorigin="anonymous")
-            link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous")
+            link(rel="stylesheet" ,href='/stylesheets/bootstrap.css',crossorigin="anonymous")
+            //link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous")
             // Custom CSS            
             link(href='/stylesheets/sidebar.css', rel='stylesheet')
     body
@@ -28,7 +28,7 @@ html(lang='en')
             #page-content-wrapper
                 .container-fluid
                     .row
-                        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1.col-xs-12.col-cs-offset-0
+                        .col-lg-6.col-lg-offset-1.col-md-8.col-md-offset-1.col-sm-10.col-sm-offset-1.col-xs-12.col-cs-offset-0
                             block header
                                 h1= title
                                 h4 Physics Problem Generator
