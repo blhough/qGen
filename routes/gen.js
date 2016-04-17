@@ -5,7 +5,7 @@ var router = express.Router();
 var title = "Generate";
 
 var question = {
-    "template": "A {object1|{[water_vehicle,'ball'],temp:{num:[[a66,bb3,345],[200,22,2323],343],unit:mass}}} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360):units:degree} north of east. What is the {object1}'s velocity {time|(2,30),unit:second} when the wind stops?",
+    "template": "A {object1|[water_vehicle,'ball']} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:degree} north of east. What is the {object1}'s velocity {time|(2,30),unit:second} when the wind stops?",
     "text": "",
     "subs": {},
     "seed": 20045,
@@ -42,6 +42,11 @@ function extractSubs( subs, template )
         {
             depth--;
         }
+        
+        if ( depth == 0 && subComplete == false )
+        {
+            question.text += char;
+        }
 
         if ( depth == 0 && subComplete == true )
         {
@@ -54,7 +59,7 @@ function extractSubs( subs, template )
             }
             else if ( typeof subText[3] === "undefined" && typeof subs[subName] !== "undefined" )
             {
-                continue;
+                question.text += subs[subName].value;
             }
             else
             {
@@ -63,6 +68,8 @@ function extractSubs( subs, template )
 
             subComplete = false;
         }
+        
+ 
     }
 
     if ( depth != 0 )
@@ -70,7 +77,7 @@ function extractSubs( subs, template )
         console.error( "unclosed brace in question template" );
     }
 
-    return subs;
+   // return subs;
 };
 
 
@@ -184,9 +191,11 @@ function redirectSubType( subType, sub )
         case "(": //range
             return parseRangeSub( sub );
         case "'": //literal
+            question.text += trimBracket( sub );
             return parseLiteralSub( sub );
         case "": //substitue
-            return "subbed - " + sub;
+            question.text += sub;
+            return sub;
         default:
             console.error( "undefined sub type: " + subType );
     }
@@ -403,7 +412,7 @@ router.get( '/:category/:type', function ( req, res, next )
 {
     console.log( extractSubs( question.subs, question.template ) );
     // console.log(subs);
-    res.render( 'generator', { title: title });
+    res.render( 'generator', { title: title, question: question });
     console.log( req.params.category + ' ' + req.params.type );
 });
 

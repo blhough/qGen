@@ -2,8 +2,6 @@ extends layout.jade
 
 block content
     include partials/gen-button
-    if subs
-        each sub in subs
-            .panel
-                p= sub
+    if question
+        p= question.text
     include partials/gen-button
