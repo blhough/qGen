@@ -129,3 +129,11 @@ html{
     
     }
 }
+
+
+.panel-subtitle
+{
+	font-size: 90%;	
+	opacity: .5;
+	margin-left: 2%;
+}

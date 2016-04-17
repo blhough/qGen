@@ -4,13 +4,66 @@ var router = express.Router();
 
 var title = "qGen | Generate";
 
+Math.degrees = function ( rad )
+{
+    return rad * ( 180 / Math.PI );
+}
+
+Math.radians = function ( deg )
+{
+    return deg * ( Math.PI / 180 );
+}
+
 var question = {
-    "template": "A {object1|[water_vehicle,'ball']} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:degree} north of east. What is the {object1}'s velocity {time|(2,30),unit:second} when the wind stops?",
-    "text": "",
-    "subs": {},
-    "seed": 20045,
-    "answer": 0
+    template: "A {object1|[water_vehicle,'ball']} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:degree} north of east. What is the {object1}'s velocity after {time|(2,30),unit:second} when the wind stops?",
+    text: "",
+    subs: {},
+    seed: 20045,
+    formula: function ()
+    {
+        var q = this.subs;
+        var vx = q.acceleration.value * q.time.value * Math.cos( Math.degrees( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.degrees( 90 ) );
+        var vy = q.acceleration.value * q.time.value * Math.sin( Math.degrees( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.degrees( 90 ) );
+
+        return { x: vx, y: vy };
+    },
+    answer: 0,
+    labels: ["Vx", "Vy"],
+    units: ["m/s", "m/s"]
 };
+
+/**
+ * @param {Object<question>} question
+ * @return {Object}
+ */
+function calculateQuestionAsnwer( q )
+{
+    q.answer = q.formula();
+    console.log( q.answer );
+    return q.answer;
+}
+
+
+
+/**
+ * @param {Object<question>} question
+ * @return {Object}
+ */
+function buildQuestion( q ) {
+    var preparedQuestion = {};
+    extractSubs( q.subs, q.template );
+    
+    preparedQuestion.text = q.text;
+    preparedQuestion.answer = calculateQuestionAsnwer( q );
+    preparedQuestion.units = q.units;
+    preparedQuestion.labels = q.labels;
+    
+    return preparedQuestion;
+}
+
+
+
+
 
 /**
  * @param {Object} subs substitutes stored in the question
@@ -42,7 +95,7 @@ function extractSubs( subs, template )
         {
             depth--;
         }
-        
+
         if ( depth == 0 && subComplete == false )
         {
             question.text += char;
@@ -68,8 +121,8 @@ function extractSubs( subs, template )
 
             subComplete = false;
         }
-        
- 
+
+
     }
 
     if ( depth != 0 )
@@ -77,7 +130,9 @@ function extractSubs( subs, template )
         console.error( "unclosed brace in question template" );
     }
 
-   // return subs;
+    calculateQuestionAsnwer( question );
+
+    // return subs;
 };
 
 
@@ -419,9 +474,10 @@ router.get( '/:category/:type', function ( req, res, next )
 /* GET home page. */
 router.get( '/:chapter', function ( req, res, next )
 {
-    console.log( extractSubs( question.subs, question.template ) );
-    res.send(question.text);
-    console.log( req.params.category );
+    //console.log( extractSubs( question.subs, question.template ) );
+    var preparedQuestion = buildQuestion( question );
+    console.log( preparedQuestion );
+    res.send( preparedQuestion );
 });
 
 
