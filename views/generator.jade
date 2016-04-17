@@ -2,10 +2,14 @@ extends layout.jade
 
 block append scripts
     script(src='/javascripts/main.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js')
 
 
 block content
-    #questions
+    #questions(ng-app="questions" ng-controller="questionCtrl")
+        .row
+            {{myData.text}}
+        question-template
         .row.question-block(style="display:none")
             .col
                 .panel.panel-default
@@ -24,4 +28,4 @@ block content
                                     input.form-control(type='text', placeholder='Answer')
                                     span.input-group-btn
                                         button.btn.btn-default(type='button') Check
-    include partials/gen-button
+        include partials/gen-button

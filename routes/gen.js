@@ -55,7 +55,8 @@ function buildQuestion( q ) {
     
     preparedQuestion.text = q.text;
     preparedQuestion.answer = calculateQuestionAsnwer( q );
-    preparedQuestion.units = q.units;
+    //preparedQuestion.units = q.units;
+    preparedQuestion.units = [{label: 'vw',unit: 'm/s'},{label: 'vy',unit: 'm/s'}],
     preparedQuestion.labels = q.labels;
     
     return preparedQuestion;
@@ -476,6 +477,7 @@ router.get( '/:chapter', function ( req, res, next )
 {
     //console.log( extractSubs( question.subs, question.template ) );
     var preparedQuestion = buildQuestion( question );
+    preparedQuestion.chapter =  req.params.chapter;
     console.log( preparedQuestion );
     res.send( preparedQuestion );
 });

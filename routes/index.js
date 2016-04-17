@@ -11,5 +11,9 @@ router.get('/about', function(req, res, next) {
   res.render('about', { title: 'qGen | About' });
 });
 
+router.get('/templates/:name', function (req, res)
+ { var name = req.params.name;
+   res.render('partials/templates/' + name);
+});
 
 module.exports = router;
