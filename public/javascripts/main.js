@@ -55,7 +55,7 @@ $( document ).ready( function ()
     app.directive( 'questionTemplate', function ()
     {
         return {
-            templateUrl: root + '/templates/question-template'
+            templateUrl: '/templates/question-template'
         };
     });
 
