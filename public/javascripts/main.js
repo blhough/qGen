@@ -22,7 +22,7 @@ $( document ).ready( function ()
         
         $scope.generate = function ()
         {
-            $http.get( root + '/gen/' + $scope.chapter ).then( function ( response )
+            $http.get( '/gen/' + $scope.chapter ).then( function ( response )
             {
                 $scope.questionCount++;
 
