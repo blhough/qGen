@@ -16,8 +16,8 @@ html(lang='en')
                 title Simple Sidebar - Start Bootstrap Template
         block includes
             // Bootstrap Core CSS
-            link(rel="stylesheet" ,href='/stylesheets/bootstrap.css',crossorigin="anonymous")
-            //link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous")
+            //link(rel="stylesheet" ,href='/stylesheets/bootstrap.css',crossorigin="anonymous")
+            link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous")
             // Custom CSS            
             link(href='/stylesheets/sidebar.css', rel='stylesheet')
     body
@@ -29,6 +29,10 @@ html(lang='en')
                 .container-fluid
                     .row
                         .col-lg-6.col-lg-offset-1.col-md-8.col-md-offset-1.col-sm-10.col-sm-offset-1.col-xs-12.col-cs-offset-0
+                            .visible-xs
+                                h3
+                                    a#menu-toggle(href='#menu-toggle' style='color:black')
+                                        span.glyphicon.glyphicon-menu-hamburger
                             block header
                                 h1= title
                                 h4 Physics Problem Generator
@@ -40,7 +44,7 @@ html(lang='en')
                                     | Make sure to keep all page content within the 
                                     code #page-content-wrapper
                                     | .
-                                a#menu-toggle.btn.btn-default(href='#menu-toggle') Toggle Menu
+
             // #page-content-wrapper
         // #wrapper
         include ./partials/script.jade

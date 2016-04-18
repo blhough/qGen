@@ -87,7 +87,7 @@ html{
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
+    height: 95px;
     font-size: 18px;
     line-height: 60px;
 }
@@ -96,9 +96,23 @@ html{
     color: #999999;
 }
 
+.sidebar-nav > .sidebar-brand a > img {
+    width: 40px;
+    margin-top: 40px;
+}
+
+
+.sidebar-nav > .sidebar-brand a > span {
+    margin-left: 16px;
+    line-height: 16px;
+    vertical-align: bottom;
+    font-size: 24px;
+}
+
 .sidebar-nav > .sidebar-brand a:hover {
     color: #fff;
     background: none;
+
 }
 
 @media(min-width:768px) {
@@ -107,15 +121,16 @@ html{
     }
 
     #wrapper.toggled {
-        padding-left: 0;
+        padding-left: 200px;
     }
 
     #sidebar-wrapper {
         width: 200px;
     }
+    
 
     #wrapper.toggled #sidebar-wrapper {
-        width: 0;
+        width: 200px;
     }
 
     #page-content-wrapper {
