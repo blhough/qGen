@@ -3,23 +3,23 @@ div(ng-repeat='question in questions')
         .col
             .panel.panel-default
                 .panel-heading
-                    span.panel-title Question
-                        span.question-number {{questionCount}}
-                    span.panel-title.panel-subtitle Chapter
+                    span.panel-title Question 
+                        span.question-number {{::questionCount}}
+                    span.panel-title.panel-subtitle Chapter 
                         span.chapter-number {{question.chapter}}
                 .panel-body
                     .row
                         .col.col-xs-12
                             p.question-text {{question.text}}
                     .row
-                        .col.col-lg-4.col-xs-12(ng-repeat='attr in question.units')
+                        .col.col-xs-12(ng-repeat='attr in question.attr' ng-class='::"col-lg-"+size')
                             form
                                 .form-group.question-input
                                     label(for='exampleInputAmount', style='margin-left:10px') {{attr.label}}
                                     .input-group
                                         input.form-control(type='text', placeholder='{{attr.label}}')
                                         .input-group-addon {{attr.unit}}
-                        .col.col-lg-4
+                        .col(ng-class='::"col-lg-"+size')
                             form
                                 .form-group(style="margin-bottom:0")
                                     label.visible-lg(style="visibility:hidden") fail

@@ -7,25 +7,5 @@ block append scripts
 
 block content
     #questions(ng-app="questions" ng-controller="questionCtrl")
-        .row
-            {{myData.text}}
         question-template
-        .row.question-block(style="display:none")
-            .col
-                .panel.panel-default
-                    .panel-heading
-                        span.panel-title Question 
-                            span.question-number 4
-                        span.panel-title.panel-subtitle Chapter 
-                            span.chapter-number 4
-                    .panel-body
-                        .row
-                            .col-xs-12
-                                p.question-text Panel content
-                        .row
-                            .col-sm-6.col-sm-offset-6
-                                .input-group
-                                    input.form-control(type='text', placeholder='Answer')
-                                    span.input-group-btn
-                                        button.btn.btn-default(type='button') Check
         include partials/gen-button

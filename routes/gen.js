@@ -1,6 +1,5 @@
 var express = require( 'express' );
 var router = express.Router();
-//var gen = require('/helpers/generator');
 
 var title = "qGen | Generate";
 
@@ -14,11 +13,10 @@ Math.radians = function ( deg )
     return deg * ( Math.PI / 180 );
 }
 
-var question = {
+
+
+var questionTemplate_ch2 = {
     template: "A {object1|[water_vehicle,'ball']} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:degree} north of east. What is the {object1}'s velocity after {time|(2,30),unit:second} when the wind stops?",
-    text: "",
-    subs: {},
-    seed: 20045,
     formula: function ()
     {
         var q = this.subs;
@@ -27,20 +25,20 @@ var question = {
 
         return { x: vx, y: vy };
     },
-    answer: 0,
-    labels: ["Vx", "Vy"],
-    units: ["m/s", "m/s"]
+    attr: [
+        {label: 'Vx', unit: 'm/s'},
+        {label: 'Vy', unit: 'm/s'}
+    ],
+    chapter: 2
 };
 
 /**
  * @param {Object<question>} question
  * @return {Object}
  */
-function calculateQuestionAsnwer( q )
+function calculateQuestionAsnwer( tmp )
 {
-    q.answer = q.formula();
-    console.log( q.answer );
-    return q.answer;
+    return tmp.formula();
 }
 
 
@@ -49,17 +47,25 @@ function calculateQuestionAsnwer( q )
  * @param {Object<question>} question
  * @return {Object}
  */
-function buildQuestion( q ) {
-    var preparedQuestion = {};
-    extractSubs( q.subs, q.template );
+function buildQuestion( tmp ) {
     
-    preparedQuestion.text = q.text;
-    preparedQuestion.answer = calculateQuestionAsnwer( q );
-    //preparedQuestion.units = q.units;
-    preparedQuestion.units = [{label: 'vw',unit: 'm/s'},{label: 'vy',unit: 'm/s'}],
-    preparedQuestion.labels = q.labels;
+    var que = {
+        text: "",
+        subs: {},
+        formula: undefined,
+        answer: {},
+        attr: [],
+        chapter: 0
+    };
     
-    return preparedQuestion;
+    extractSubs( que , tmp.template );
+    
+    que.formula = tmp.formula;
+    que.answer = calculateQuestionAsnwer( que, tmp );
+    que.attr = tmp.attr;
+    que.chapter = tmp.chapter;
+      
+    return que;
 }
 
 
@@ -70,8 +76,9 @@ function buildQuestion( q ) {
  * @param {Object} subs substitutes stored in the question
  * @param {string} template  question template text
  */
-function extractSubs( subs, template )
+function extractSubs( que, tmp )
 {
+    var subs = que.subs;
     var subName_reg = /\{([^\{\}\(\)\[\]\,\:\<\>\']+?)(\|(.+)|)\}/
     var subName = "";
     var depth = 0; // "{" increase depth
@@ -79,9 +86,9 @@ function extractSubs( subs, template )
     var char = "";
     var startIndex = 0;
 
-    for ( var index = 0; index < template.length; index++ )
+    for ( var index = 0; index < tmp.length; index++ )
     {
-        char = template.charAt( index );
+        char = tmp.charAt( index );
 
         if ( char == "{" )
         {
@@ -99,21 +106,21 @@ function extractSubs( subs, template )
 
         if ( depth == 0 && subComplete == false )
         {
-            question.text += char;
+            que.text += char;
         }
 
         if ( depth == 0 && subComplete == true )
         {
-            var subText = subName_reg.exec( template.substring( startIndex, index + 1 ) );
+            var subText = subName_reg.exec( tmp.substring( startIndex, index + 1 ) );
             subName = subText[1];
 
             if ( typeof subText[3] !== "undefined" && typeof subs[subName] === "undefined" )
             {
-                subs[subName] = parseObjectSub( "{" + subText[3] + "}" );
+                subs[subName] = parseObjectSub( que , "{" + subText[3] + "}" );
             }
             else if ( typeof subText[3] === "undefined" && typeof subs[subName] !== "undefined" )
             {
-                question.text += subs[subName].value;
+                que.text += subs[subName].value;
             }
             else
             {
@@ -130,10 +137,6 @@ function extractSubs( subs, template )
     {
         console.error( "unclosed brace in question template" );
     }
-
-    calculateQuestionAsnwer( question );
-
-    // return subs;
 };
 
 
@@ -143,7 +146,7 @@ function extractSubs( subs, template )
  * @param {string} name
  * @param {boolean} objectType
  */
-function parseSubs( sub, objectType )
+function parseSubs( que, sub, objectType )
 {
     var subArray = commaSplit( sub );
     var obj = {}
@@ -155,11 +158,11 @@ function parseSubs( sub, objectType )
             var extraction = extractVarName( subArray[i] );
             var subType = parseSubType( extraction.sub );
 
-            obj[extraction.varName] = redirectSubType( subType, extraction.sub );
+            obj[extraction.varName] = redirectSubType( que, subType, extraction.sub );
         }
         else
         {
-            obj = redirectSubType( parseSubType( sub ), sub );
+            obj = redirectSubType( que, parseSubType( sub ), sub );
         }
     }
 
@@ -231,14 +234,14 @@ function parseSubType( sub )
  * @param {string} name
  * @return {}
  */
-function redirectSubType( subType, sub )
+function redirectSubType( que, subType, sub )
 {
     console.log( "sub Type: " + subType + " : " + sub );
 
     switch ( subType )
     {
         case "{": // object
-            return parseObjectSub( sub );
+            return parseObjectSub( que, sub );
         case "[": //choose
             return parseChooseSub( sub );
         case "<": //tbd
@@ -247,10 +250,10 @@ function redirectSubType( subType, sub )
         case "(": //range
             return parseRangeSub( sub );
         case "'": //literal
-            question.text += trimBracket( sub );
+            que.text += trimBracket( sub );
             return parseLiteralSub( sub );
         case "": //substitue
-            question.text += sub;
+            que.text += sub;
             return sub;
         default:
             console.error( "undefined sub type: " + subType );
@@ -263,10 +266,10 @@ function redirectSubType( subType, sub )
  * @param {Object} obj
  * @param {string} name
  */
-function parseObjectSub( sub )
+function parseObjectSub( que, sub )
 {
     sub = trimBracket( sub );
-    return makeObject( sub );
+    return makeObject( que, sub );
 };
 
 
@@ -317,9 +320,9 @@ function parseSubstituteSub( sub )
  * @param {string} sub
  * @param {Object} obj
  */
-function makeObject( sub )
+function makeObject( que, sub )
 {
-    return parseSubs( sub, true )
+    return parseSubs( que, sub, true )
 }
 
 
@@ -466,18 +469,17 @@ function extractSubNames( subs )
 /* GET home page. */
 router.get( '/:category/:type', function ( req, res, next )
 {
-    console.log( extractSubs( question.subs, question.template ) );
+    console.log( extractSubs( questionTemplate_ch2.subs, questionTemplate_ch2.template ) );
     // console.log(subs);
-    res.render( 'generator', { title: title, question: question });
+    res.render( 'generator', { title: title, question: questionTemplate_ch2 });
     console.log( req.params.category + ' ' + req.params.type );
 });
 
 /* GET home page. */
 router.get( '/:chapter', function ( req, res, next )
 {
-    //console.log( extractSubs( question.subs, question.template ) );
-    var preparedQuestion = buildQuestion( question );
-    preparedQuestion.chapter =  req.params.chapter;
+
+    var preparedQuestion = buildQuestion( questionTemplate_ch2 );
     console.log( preparedQuestion );
     res.send( preparedQuestion );
 });

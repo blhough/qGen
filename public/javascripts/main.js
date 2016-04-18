@@ -19,12 +19,32 @@ $( document ).ready( function ()
     {
         $scope.questions = [];
         $scope.questionCount = 0;
-        $scope.chapter = 2;
+        
         $scope.generate = function ()
         {
             $http.get( root + '/gen/' + $scope.chapter ).then( function ( response )
             {
-                 $scope.questionCount++;
+                $scope.questionCount++;
+
+                var size = response.data.attr.length;
+
+                switch ( size )
+                {
+                    case 3:
+                        $scope.size = 3;
+                        break;
+                    case 2:
+                        $scope.size = 4;
+                        break;
+                    case 1:
+                        $scope.size = 6;
+                        break;
+
+                    default:
+                        $scope.size = 3;
+                        break;
+                }
+
                 console.log( response.data );
                 $scope.questions.push( response.data );
             });
