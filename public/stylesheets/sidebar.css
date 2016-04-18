@@ -137,3 +137,14 @@ html{
 	opacity: .5;
 	margin-left: 2%;
 }
+
+form
+{
+    margin-bottom: 0;    
+}
+
+.question-input
+{
+    margin-top: 15px;
+    margin-bottom: 0;
+}
