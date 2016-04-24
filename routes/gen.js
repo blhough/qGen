@@ -14,20 +14,113 @@ Math.radians = function ( deg )
 }
 
 
+var words =
+    {
+        "noun":
+        {
+            "ball":
+            [
+                "tennis ball",
+                "baseball",
+                "large ball"
+            ],
+
+            "vehicle":
+            {
+                "land_vehicle":
+                {
+                    "truck":
+                    [
+                        "truck",
+                        "garbage truck"
+                    ],
+
+                    "car":
+                    [
+                        "coupe",
+                        "sedan",
+                        "telsa"
+                    ]
+                },
+
+                "water_vehicle":
+                [
+                    "boat",
+                    "sailboat",
+                    "jetski"
+                ]
+            }
+        },
+
+        "unit":
+        {
+            "velocity":
+            [
+                "m/s",
+                "mph"
+            ],
+
+            "acceleration":
+            [
+                "m/s^2"
+            ]
+        },
+        
+        "cardinal_direction":
+        [
+            "north",
+            "south",
+            "east",
+            "west"
+        ],
+        
+                "ordinal_direction":
+        [
+            "northeast",
+            "southeast",
+            "northwest",
+            "southwest"
+        ]
+    };
+
+var flatWords = {};
+
+function flattenWords( words, path )
+{
+    if ( typeof words === "object" && !Array.isArray( words ) )
+    {
+
+        for ( var key in words )
+        {
+            if ( words.hasOwnProperty( key ) )
+            {
+                var arr = path.slice();
+                arr.push( key );
+                console.log( arr );
+                flattenWords( words[key], arr );
+            }
+        }
+    }
+    else
+    {
+        flatWords[path[path.length - 1]] = path;
+    }
+}
+
 
 var questionTemplate_ch2 = {
-    template: "A {object1|[water_vehicle,'ball']} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:degree} north of east. What is the {object1}'s velocity after {time|(2,30),unit:second} when the wind stops?",
+    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s velocity after {time|(2,30),unit:'s'} when the wind stops?",
     formula: function ()
     {
         var q = this.subs;
-        var vx = q.acceleration.value * q.time.value * Math.cos( Math.degrees( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.degrees( 90 ) );
-        var vy = q.acceleration.value * q.time.value * Math.sin( Math.degrees( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.degrees( 90 ) );
+        var vx = q.acceleration.value * q.time.value * Math.cos( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.radians( 90 ) );
+        var vy = q.acceleration.value * q.time.value * Math.sin( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.radians( 90 ) );
 
         return { x: vx, y: vy };
     },
     attr: [
-        {label: 'Vx', unit: 'm/s'},
-        {label: 'Vy', unit: 'm/s'}
+        { label: 'Vx', unit: 'm/s' },
+        { label: 'Vy', unit: 'm/s' }
     ],
     chapter: 2
 };
@@ -47,8 +140,9 @@ function calculateQuestionAsnwer( tmp )
  * @param {Object<question>} question
  * @return {Object}
  */
-function buildQuestion( tmp ) {
-    
+function buildQuestion( tmp )
+{
+
     var que = {
         text: "",
         subs: {},
@@ -57,14 +151,14 @@ function buildQuestion( tmp ) {
         attr: [],
         chapter: 0
     };
-    
-    extractSubs( que , tmp.template );
-    
+
+    extractSubs( que, tmp.template );
+
     que.formula = tmp.formula;
     que.answer = calculateQuestionAsnwer( que, tmp );
     que.attr = tmp.attr;
     que.chapter = tmp.chapter;
-      
+
     return que;
 }
 
@@ -116,7 +210,7 @@ function extractSubs( que, tmp )
 
             if ( typeof subText[3] !== "undefined" && typeof subs[subName] === "undefined" )
             {
-                subs[subName] = parseObjectSub( que , "{" + subText[3] + "}" );
+                subs[subName] = parseObjectSub( que, "{" + subText[3] + "}" );
             }
             else if ( typeof subText[3] === "undefined" && typeof subs[subName] !== "undefined" )
             {
@@ -243,18 +337,21 @@ function redirectSubType( que, subType, sub )
         case "{": // object
             return parseObjectSub( que, sub );
         case "[": //choose
-            return parseChooseSub( sub );
+            return parseChooseSub( que, sub );
         case "<": //tbd
 
             break;
         case "(": //range
-            return parseRangeSub( sub );
+            var temp = parseRangeSub( sub );
+            que.text += temp;
+            return temp;
         case "'": //literal
             que.text += trimBracket( sub );
             return parseLiteralSub( sub );
         case "": //substitue
-            que.text += sub;
-            return sub;
+            var temp = parseSubstituteSub( sub );
+            que.text += temp;
+            return temp;
         default:
             console.error( "undefined sub type: " + subType );
     }
@@ -278,12 +375,12 @@ function parseObjectSub( que, sub )
  * @param {Object} obj
  * @param {string} name 
  */
-function parseChooseSub( sub )
+function parseChooseSub( que, sub )
 {
     sub = trimBracket( sub );
 
     var choices = commaSplit( sub );
-    return makeChoice( choices );
+    return makeChoice( que, choices );
     //obj[name] = choices[Math.floor(( Math.random() * commaSplit.length ) )];
 };
 
@@ -312,7 +409,7 @@ function parseLiteralSub( sub )
  */
 function parseSubstituteSub( sub )
 {
-
+    return makeSubstitution( sub );
 };
 
 
@@ -333,30 +430,52 @@ function makeObject( que, sub )
  * @param {string} name
  * @returns {}
  */
-function makeChoice( choices )
+function makeChoice( que,  choices )
 {
     var choice = Math.floor( Math.random() * choices.length );
-    return parseSubs( choices[choice], false );
+    return parseSubs( que , choices[choice] , false);
 }
 
 
 
 
 
-/**
- * @param {Object} obj
- * @param {string} name
- */
+
 function makeRange( num )
 {
     var rand = Math.floor( Math.random() * num );
-    return parseSubs( rand, false );
+    return rand;
 }
 
 
 
 
 
+
+function makeSubstitution( sub )
+{
+    var path = flatWords[sub];
+    if (typeof path === "undefined") {
+        return "null";
+    }
+    var choices = digArray( words, path );
+    var rand = Math.floor( Math.random() * choices.length );
+    return choices[rand];
+}
+
+function digArray( wordsC , path )
+{
+    if ( path.length > 1 )
+    {
+        var arr = path.slice();
+        arr.shift();
+        return digArray( wordsC[path[0]], arr );
+    }
+    else
+    {
+        return wordsC[path[0]];
+    }
+}
 
 
 
@@ -478,7 +597,7 @@ router.get( '/:category/:type', function ( req, res, next )
 /* GET home page. */
 router.get( '/:chapter', function ( req, res, next )
 {
-
+    flattenWords( words, [] );
     var preparedQuestion = buildQuestion( questionTemplate_ch2 );
     console.log( preparedQuestion );
     res.send( preparedQuestion );
