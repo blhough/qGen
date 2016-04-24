@@ -107,7 +107,6 @@ function flattenWords( words, path )
     }
 }
 
-
 var questionTemplate_ch2 = {
     template: "A {object1|[water_vehicle,ball]} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s velocity after {time|(2,30),unit:'s'} when the wind stops?",
     formula: function ()
@@ -125,6 +124,35 @@ var questionTemplate_ch2 = {
     chapter: 2
 };
 
+
+
+
+var questionTemplate_ch2b = {
+    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s speed after {time|(2,30),unit:'s'} when the wind stops?",
+    formula: function ()
+    {
+        var q = this.subs;
+        var vx = q.acceleration.value * q.time.value * Math.cos( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.radians( 90 ) );
+        var vy = q.acceleration.value * q.time.value * Math.sin( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.radians( 90 ) );
+        var speed = Math.sqrt( vx * vx + vy * vy );
+        return { speed: speed };
+    },
+    attr: [
+        { label: 'speed', unit: 'm/s' }
+    ],
+    chapter: 2
+};
+
+
+var questionTemplates = 
+[
+    [],
+    [
+        questionTemplate_ch2,
+        questionTemplate_ch2b
+    ]
+];
+
 /**
  * @param {Object<question>} question
  * @return {Object}
@@ -140,9 +168,12 @@ function calculateQuestionAsnwer( tmp )
  * @param {Object<question>} question
  * @return {Object}
  */
-function buildQuestion( tmp )
+function buildQuestion( chapter )
 {
-
+    var choices = questionTemplates[ chapter - 1 ];
+    var rand =  Math.floor( Math.random() * choices.length );
+    var tmp = choices[ rand ];
+    
     var que = {
         text: "",
         subs: {},
@@ -598,7 +629,7 @@ router.get( '/:category/:type', function ( req, res, next )
 router.get( '/:chapter', function ( req, res, next )
 {
     flattenWords( words, [] );
-    var preparedQuestion = buildQuestion( questionTemplate_ch2 );
+    var preparedQuestion = buildQuestion( req.params.chapter );
     console.log( preparedQuestion );
     res.send( preparedQuestion );
 });
