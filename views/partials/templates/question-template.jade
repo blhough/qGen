@@ -1,7 +1,7 @@
 div(ng-repeat='question in questions track by $index')
     .row.question-block
         .col
-            .panel.panel-default
+            .panel.panel-default(ng-class='question.panelClass')
                 .panel-heading.clearfix
                     span.panel-title Question 
                         span.question-number {{$index+1}}
@@ -16,17 +16,17 @@ div(ng-repeat='question in questions track by $index')
                         .col.col-xs-12
                             p.question-text {{question.text}}
                     .row
-                        .col.col-xs-12(ng-repeat='attr in question.attr' ng-class='"col-lg-"+question.size')
+                        .col.col-xs-12(ng-init="index2 = $index" ng-repeat='attr in question.attr track by $index' ng-class='"col-lg-"+question.width')
                             form
                                 .form-group.question-input
                                     label(for='exampleInputAmount', style='margin-left:10px') {{attr.label}}
                                     .input-group
-                                        input.form-control(type='text', placeholder='{{attr.label}}')
+                                        input.form-control(type='text', placeholder='{{attr.label}}' ng-model='question.entered[index2]' ng-disabled='question.buttonText == "correct"')
                                         .input-group-addon {{attr.unit}}
-                        .col(ng-class='"col-lg-"+question.size')
+                        .col(ng-class='"col-lg-"+question.width')
                             form
                                 .form-group(style="margin-bottom:0")
                                     label.visible-lg(style="visibility:hidden") fail
                                     //.input-group
-                                    button.btn.btn-primary.question-input(type='submit' ng-click='test($index)') Check
+                                    a.btn.btn-primary.question-input(type='submit' ng-click='checkAnswer($index)' ng-class='question.buttonClass') {{question.buttonText}}
 

@@ -115,7 +115,7 @@ var questionTemplate_ch2 = {
         var vx = q.acceleration.value * q.time.value * Math.cos( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.radians( 90 ) );
         var vy = q.acceleration.value * q.time.value * Math.sin( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.radians( 90 ) );
 
-        return { x: vx, y: vy };
+        return [vx, vy];
     },
     attr: [
         { label: 'Vx', unit: 'm/s' },
@@ -135,7 +135,8 @@ var questionTemplate_ch2b = {
         var vx = q.acceleration.value * q.time.value * Math.cos( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.radians( 90 ) );
         var vy = q.acceleration.value * q.time.value * Math.sin( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.radians( 90 ) );
         var speed = Math.sqrt( vx * vx + vy * vy );
-        return { speed: speed };
+        
+        return [speed];
     },
     attr: [
         { label: 'speed', unit: 'm/s' }
@@ -178,7 +179,7 @@ function buildQuestion( chapter )
         text: "",
         subs: {},
         formula: undefined,
-        answer: {},
+        answer: [],
         attr: [],
         chapter: 0
     };

@@ -20,7 +20,7 @@ $( document ).ready( function ()
         $scope.questionCount = 0;
         $scope.questionID = 0;
 
-        $scope.generate = function ( regen = false , index = 0 )
+        $scope.generate = function ( regen = false, index = 0 )
         {
             var chapter = regen ? $scope.questions[index] : $scope.chapter;
             $http.get( '/gen/' + $scope.chapter ).then( function ( response )
@@ -28,33 +28,39 @@ $( document ).ready( function ()
                 var question = response.data;
 
                 question.id = $scope.questionID;
+                question.entered = [];
+                question.buttonText = "Check";
+                question.buttonClass = "";
+                question.panelClass = "";
                 
-                if (!regen) {
-                $scope.questionCount++;
-                $scope.questionID++;
+
+                if ( !regen )
+                {
+                    $scope.questionCount++;
+                    $scope.questionID++;
                 }
 
-                var size = question.attr.length;
+                var width = question.attr.length;
 
-                switch ( size )
+                switch ( width )
                 {
                     case 3:
-                        question.size = 3;
+                        question.width = 3;
                         break;
                     case 2:
-                        question.size = 4;
+                        question.width = 4;
                         break;
                     case 1:
-                        question.size = 6;
+                        question.width = 6;
                         break;
 
                     default:
-                        question.size = 3;
+                        question.width = 3;
                         break;
                 }
 
                 console.log( question );
-                
+
                 if ( regen )
                 {
                     $scope.questions[index] = question;
@@ -68,8 +74,32 @@ $( document ).ready( function ()
 
         $scope.remove = function ( index )
         {
-            $scope.questions.splice(index,1);
+            $scope.questions.splice( index, 1 );
         }
+
+        $scope.checkAnswer = function ( index )
+        {
+            var que = $scope.questions[index];
+
+            for ( var i = 0; i < que.answer.length; i++ )
+            {
+                var correct = equal( que.answer[i], que.entered[i], que.answer[i]/10000 );
+                console.log( correct );
+                if (!correct) {
+                    que.panelClass = "panel-danger";
+                    return;
+                }
+            }
+            
+             que.panelClass = "panel-success";
+             que.buttonClass = "disabled btn-success";
+             que.buttonText = "correct";
+
+            console.log( que.entered );
+            console.log( que.answer );
+        }
+
+
 
     });
 
@@ -97,3 +127,25 @@ function generate( params )
         })
 }
 
+
+
+function equal( a, b, epsilon )
+{
+    absA = Math.abs( a );
+    absB = Math.abs( b );
+    diff = Math.abs( a - b );
+    epsilon = Math.abs( epsilon );
+
+    if ( a == b )
+    { // shortcut, handles infinities
+        return true;
+    } else if ( a == 0 || b == 0 || diff < a.MIN_VALUE )
+    {
+        // a or b is zero or both are extremely close to it
+        // relative error is less meaningful here
+        return diff < ( epsilon * Float.MIN_NORMAL );
+    } else
+    { // use relative error
+        return diff / ( absA + absB ) < epsilon;
+    }
+}
