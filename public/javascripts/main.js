@@ -12,42 +12,63 @@ $( document ).ready( function ()
     $chapter = $( '#chapter-select' );
 
 
-
     var app = angular.module( 'questions', [] );
 
     app.controller( 'questionCtrl', function ( $scope, $http )
     {
         $scope.questions = [];
         $scope.questionCount = 0;
-        
-        $scope.generate = function ()
+        $scope.questionID = 0;
+
+        $scope.generate = function ( regen = false , index = 0 )
         {
+            var chapter = regen ? $scope.questions[index] : $scope.chapter;
             $http.get( '/gen/' + $scope.chapter ).then( function ( response )
             {
-                $scope.questionCount++;
+                var question = response.data;
 
-                var size = response.data.attr.length;
+                question.id = $scope.questionID;
+                
+                if (!regen) {
+                $scope.questionCount++;
+                $scope.questionID++;
+                }
+
+                var size = question.attr.length;
 
                 switch ( size )
                 {
                     case 3:
-                        $scope.size = 3;
+                        question.size = 3;
                         break;
                     case 2:
-                        $scope.size = 4;
+                        question.size = 4;
                         break;
                     case 1:
-                        $scope.size = 6;
+                        question.size = 6;
                         break;
 
                     default:
-                        $scope.size = 3;
+                        question.size = 3;
                         break;
                 }
 
-                console.log( response.data );
-                $scope.questions.push( response.data );
+                console.log( question );
+                
+                if ( regen )
+                {
+                    $scope.questions[index] = question;
+                }
+                else
+                {
+                    $scope.questions.push( question );
+                }
             });
+        }
+
+        $scope.remove = function ( index )
+        {
+            $scope.questions.splice(index,1);
         }
 
     });

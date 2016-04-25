@@ -1,28 +1,32 @@
-div(ng-repeat='question in questions')
+div(ng-repeat='question in questions track by $index')
     .row.question-block
         .col
             .panel.panel-default
-                .panel-heading
+                .panel-heading.clearfix
                     span.panel-title Question 
-                        span.question-number {{::questionCount}}
+                        span.question-number {{$index+1}}
                     span.panel-title.panel-subtitle Chapter 
                         span.chapter-number {{question.chapter}}
+                    a.btn.btn-sm.pull-right(ng-click="remove($index)" style='color:black')
+                        span.glyphicon.glyphicon-remove
+                    a.btn.btn-sm.pull-right(ng-click="generate(true,$index)" style='color:black')
+                        span.glyphicon.glyphicon-refresh
                 .panel-body
                     .row
                         .col.col-xs-12
                             p.question-text {{question.text}}
                     .row
-                        .col.col-xs-12(ng-repeat='attr in question.attr' ng-class='::"col-lg-"+size')
+                        .col.col-xs-12(ng-repeat='attr in question.attr' ng-class='"col-lg-"+question.size')
                             form
                                 .form-group.question-input
                                     label(for='exampleInputAmount', style='margin-left:10px') {{attr.label}}
                                     .input-group
                                         input.form-control(type='text', placeholder='{{attr.label}}')
                                         .input-group-addon {{attr.unit}}
-                        .col(ng-class='::"col-lg-"+size')
+                        .col(ng-class='"col-lg-"+question.size')
                             form
                                 .form-group(style="margin-bottom:0")
                                     label.visible-lg(style="visibility:hidden") fail
                                     //.input-group
-                                    button.btn.btn-primary.question-input(type='submit') Check
+                                    button.btn.btn-primary.question-input(type='submit' ng-click='test($index)') Check
 
