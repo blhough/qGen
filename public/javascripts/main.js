@@ -25,13 +25,14 @@ $( document ).ready( function ()
             var chapter = regen ? $scope.questions[index] : $scope.chapter;
             $http.get( '/gen/' + $scope.chapter ).then( function ( response )
             {
-                var question = response.data;
+                var que = response.data;
 
-                question.id = $scope.questionID;
-                question.entered = [];
-                question.buttonText = "Check";
-                question.buttonClass = "";
-                question.panelClass = "";
+                que.id = $scope.questionID;
+                que.entered = [];
+                que.buttonText = "Check";
+                que.buttonClass = "";
+                que.panelClass = "";
+                que.correct = false;
                 
 
                 if ( !regen )
@@ -40,34 +41,34 @@ $( document ).ready( function ()
                     $scope.questionID++;
                 }
 
-                var width = question.attr.length;
+                var width = que.attr.length;
 
                 switch ( width )
                 {
                     case 3:
-                        question.width = 3;
+                        que.width = 3;
                         break;
                     case 2:
-                        question.width = 4;
+                        que.width = 4;
                         break;
                     case 1:
-                        question.width = 6;
+                        que.width = 6;
                         break;
 
                     default:
-                        question.width = 3;
+                        que.width = 3;
                         break;
                 }
 
-                console.log( question );
+                console.log( que );
 
                 if ( regen )
                 {
-                    $scope.questions[index] = question;
+                    $scope.questions[index] = que;
                 }
                 else
                 {
-                    $scope.questions.push( question );
+                    $scope.questions.push( que );
                 }
             });
         }
@@ -87,6 +88,8 @@ $( document ).ready( function ()
                 console.log( correct );
                 if (!correct) {
                     que.panelClass = "panel-danger";
+                    que.buttonText = "Try Again";
+                    
                     return;
                 }
             }
@@ -94,6 +97,7 @@ $( document ).ready( function ()
              que.panelClass = "panel-success";
              que.buttonClass = "disabled btn-success";
              que.buttonText = "correct";
+             que.correct = true;
 
             console.log( que.entered );
             console.log( que.answer );
@@ -143,7 +147,7 @@ function equal( a, b, epsilon )
     {
         // a or b is zero or both are extremely close to it
         // relative error is less meaningful here
-        return diff < ( epsilon * Float.MIN_NORMAL );
+        return diff < ( epsilon * a.MIN_VALUE );
     } else
     { // use relative error
         return diff / ( absA + absB ) < epsilon;

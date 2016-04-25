@@ -163,3 +163,23 @@ form
     margin-top: 15px;
     margin-bottom: 0;
 }
+
+.question-input.disabled
+{
+    filter: alpha(opacity=65);
+    opacity: .65;
+}
+
+
+
+.form-control[disabled], fieldset[disabled] .form-control {
+    cursor: default;
+}
+
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    cursor: default;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: .65;
+}

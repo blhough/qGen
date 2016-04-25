@@ -56,8 +56,7 @@ var words =
         {
             "velocity":
             [
-                "m/s",
-                "mph"
+                "m/s"
             ],
 
             "acceleration":
@@ -108,7 +107,7 @@ function flattenWords( words, path )
 }
 
 var questionTemplate_ch2 = {
-    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s velocity after {time|(2,30),unit:'s'} when the wind stops?",
+    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|'north'} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s velocity after {time|(2,30),unit:'s'} when the wind stops?",
     formula: function ()
     {
         var q = this.subs;
@@ -128,7 +127,7 @@ var questionTemplate_ch2 = {
 
 
 var questionTemplate_ch2b = {
-    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|[cardinal_direction,ordinal_direction]} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s speed after {time|(2,30),unit:'s'} when the wind stops?",
+    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|'north'} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s speed after {time|(2,30),unit:'s'} when the wind stops?",
     formula: function ()
     {
         var q = this.subs;
