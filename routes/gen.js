@@ -61,7 +61,7 @@ var words =
 
             "acceleration":
             [
-                "m/s^2"
+                "\(m/s^2\)"
             ]
         },
         
