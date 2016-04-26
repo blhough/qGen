@@ -14,15 +14,15 @@ div(ng-repeat='question in questions track by $index')
                 .panel-body
                     .row
                         .col.col-xs-12
-                            p.question-text {{question.text}}
+                            p.question-text(mathjax-bind="question.text")
                     .row
                         form(ng-submit='checkAnswer($index)')
                             .col.col-xs-12(ng-init="index2 = $index" ng-repeat='attr in question.attr track by $index' ng-class='"col-lg-"+question.width')
                                 .form-group.question-input(ng-class='{disabled: question.correct}')
-                                    label(for='exampleInputAmount', style='margin-left:10px') {{attr.label}}
+                                    label(for='exampleInputAmount', style='margin-left:10px' mathjax-bind="attr.label") {{attr.label}}
                                     .input-group
                                         input.form-control(type='text', placeholder='{{attr.label}}' ng-model='question.entered[index2]' ng-disabled='question.buttonText == "correct"')
-                                        .input-group-addon {{attr.unit}}
+                                        .input-group-addon(mathjax-bind="attr.unit") \({{attr.unit}}\)
                             .col(ng-class='"col-lg-"+question.width')
                                 .form-group(style="margin-bottom:0")
                                     label.visible-lg(style="visibility:hidden") fail

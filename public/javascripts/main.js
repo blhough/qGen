@@ -14,7 +14,7 @@ $( document ).ready( function ()
 
     var app = angular.module( 'questions', [] );
 
-    app.controller( 'questionCtrl', function ( $scope, $http )
+    app.controller( 'questionCtrl', function ( $scope, $http, $timeout )
     {
         $scope.questions = [];
         $scope.questionCount = 0;
@@ -33,7 +33,7 @@ $( document ).ready( function ()
                 que.buttonClass = "";
                 que.panelClass = "";
                 que.correct = false;
-                
+
 
                 if ( !regen )
                 {
@@ -84,20 +84,21 @@ $( document ).ready( function ()
 
             for ( var i = 0; i < que.answer.length; i++ )
             {
-                var correct = equal( que.answer[i], que.entered[i], que.answer[i]/10000 );
+                var correct = equal( que.answer[i], que.entered[i], que.answer[i] / 10000 + .001 );
                 console.log( correct );
-                if (!correct) {
+                if ( !correct )
+                {
                     que.panelClass = "panel-danger";
                     que.buttonText = "Try Again";
-                    
+
                     return;
                 }
             }
-            
-             que.panelClass = "panel-success";
-             que.buttonClass = "disabled btn-success";
-             que.buttonText = "correct";
-             que.correct = true;
+
+            que.panelClass = "panel-success";
+            que.buttonClass = "disabled btn-success";
+            que.buttonText = "correct";
+            que.correct = true;
 
             console.log( que.entered );
             console.log( que.answer );
@@ -114,6 +115,22 @@ $( document ).ready( function ()
         };
     });
 
+
+    app.directive( "mathjaxBind", function ()
+    {
+        return {
+            restrict: "A",
+            controller: ["$scope", "$element", "$attrs",
+                function ( $scope, $element, $attrs )
+                {
+                    $scope.$watch( $attrs.mathjaxBind, function ( texExpression )
+                    {
+                        $element.html( texExpression );
+                        MathJax.Hub.Queue( ["Typeset", MathJax.Hub, $element[0]] );
+                    });
+                }]
+        };
+    });
 });
 
 function generate( params )

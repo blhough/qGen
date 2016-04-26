@@ -61,10 +61,10 @@ var words =
 
             "acceleration":
             [
-                "\(m/s^2\)"
+                "m/s^2"
             ]
         },
-        
+
         "cardinal_direction":
         [
             "north",
@@ -72,8 +72,8 @@ var words =
             "east",
             "west"
         ],
-        
-                "ordinal_direction":
+
+        "ordinal_direction":
         [
             "northeast",
             "southeast",
@@ -134,7 +134,7 @@ var questionTemplate_ch2b = {
         var vx = q.acceleration.value * q.time.value * Math.cos( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.radians( 90 ) );
         var vy = q.acceleration.value * q.time.value * Math.sin( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.radians( 90 ) );
         var speed = Math.sqrt( vx * vx + vy * vy );
-        
+
         return [speed];
     },
     attr: [
@@ -144,14 +144,14 @@ var questionTemplate_ch2b = {
 };
 
 
-var questionTemplates = 
-[
-    [],
+var questionTemplates =
     [
-        questionTemplate_ch2,
-        questionTemplate_ch2b
-    ]
-];
+        [],
+        [
+            questionTemplate_ch2,
+            questionTemplate_ch2b
+        ]
+    ];
 
 /**
  * @param {Object<question>} question
@@ -170,10 +170,10 @@ function calculateQuestionAsnwer( tmp )
  */
 function buildQuestion( chapter )
 {
-    var choices = questionTemplates[ chapter - 1 ];
-    var rand =  Math.floor( Math.random() * choices.length );
-    var tmp = choices[ rand ];
-    
+    var choices = questionTemplates[chapter - 1];
+    var rand = Math.floor( Math.random() * choices.length );
+    var tmp = choices[rand];
+
     var que = {
         text: "",
         subs: {},
@@ -461,10 +461,10 @@ function makeObject( que, sub )
  * @param {string} name
  * @returns {}
  */
-function makeChoice( que,  choices )
+function makeChoice( que, choices )
 {
     var choice = Math.floor( Math.random() * choices.length );
-    return parseSubs( que , choices[choice] , false);
+    return parseSubs( que, choices[choice], false );
 }
 
 
@@ -486,15 +486,32 @@ function makeRange( num )
 function makeSubstitution( sub )
 {
     var path = flatWords[sub];
-    if (typeof path === "undefined") {
+    var isUnit = false;
+    
+    if ( typeof path === "undefined" )
+    {
         return "null";
     }
+    else
+    {
+        isUnit = path.indexOf('unit') > -1;
+    }
+    
     var choices = digArray( words, path );
     var rand = Math.floor( Math.random() * choices.length );
-    return choices[rand];
+
+    if ( isUnit )
+    {
+        var choice = choices;
+        return ' \\(' + choice + '\\)';
+    }
+    else
+    {
+        return choices[rand];
+    }
 }
 
-function digArray( wordsC , path )
+function digArray( wordsC, path )
 {
     if ( path.length > 1 )
     {
