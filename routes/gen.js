@@ -54,6 +54,16 @@ var words =
 
         "unit":
         {
+            "second":
+            [
+                "s"
+            ],
+
+            "degree":
+            [
+                "°"
+            ],
+
             "velocity":
             [
                 "m/s"
@@ -107,7 +117,7 @@ function flattenWords( words, path )
 }
 
 var questionTemplate_ch2 = {
-    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|'north'} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s velocity after {time|(2,30),unit:'s'} when the wind stops?",
+    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|'north'} at {!velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {!acceleration|( .2, 2 ),unit:acceleration}, {!direction2|(0,360),units:degree} north of east. What is the {object1}'s velocity after {!time|(2,30),unit:second} when the wind stops?",
     formula: function ()
     {
         var q = this.subs;
@@ -127,7 +137,7 @@ var questionTemplate_ch2 = {
 
 
 var questionTemplate_ch2b = {
-    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|'north'} at {velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {acceleration|( .2, 2 ),unit:acceleration}, {direction2|(0,360),units:'°'} north of east. What is the {object1}'s speed after {time|(2,30),unit:'s'} when the wind stops?",
+    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|'north'} at {!velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {!acceleration|( .2, 2 ),unit:acceleration}, {!direction2|(0,360),units:degree} north of east. What is the {object1}'s speed after {!time|(2,30),unit:second} when the wind stops?",
     formula: function ()
     {
         var q = this.subs;
@@ -241,11 +251,25 @@ function extractSubs( que, tmp )
 
             if ( typeof subText[3] !== "undefined" && typeof subs[subName] === "undefined" )
             {
-                subs[subName] = parseObjectSub( que, "{" + subText[3] + "}" );
+                var mathType = subName.charAt( 0 ) == '!'; //if is mathType
+
+                if ( mathType )
+                {
+                    subName = subName.substring( 1, subName.length );
+                }
+
+                subs[subName] = parseObjectSub( que, "{" + subText[3] + "}", true );
+
+                if ( mathType ) //if is mathType
+                {
+                    subs[subName].text = '\\(' + subs[subName].text + '\\)';
+                }
+
+                que.text += subs[subName].text;
             }
             else if ( typeof subText[3] === "undefined" && typeof subs[subName] !== "undefined" )
             {
-                que.text += subs[subName].value;
+                que.text += subs[subName].text;
             }
             else
             {
@@ -268,13 +292,13 @@ function extractSubs( que, tmp )
 /**
  * @param {string} sub
  * @param {Object} obj
- * @param {string} name
  * @param {boolean} objectType
+ * @param {boolean} top
  */
-function parseSubs( que, sub, objectType )
+function parseSubs( que, sub, objectType, top )
 {
     var subArray = commaSplit( sub );
-    var obj = {}
+    var obj = { text: "" }
 
     for ( var i = 0; i < subArray.length; i++ )
     {
@@ -284,6 +308,7 @@ function parseSubs( que, sub, objectType )
             var subType = parseSubType( extraction.sub );
 
             obj[extraction.varName] = redirectSubType( que, subType, extraction.sub );
+            obj.text += obj[extraction.varName];
         }
         else
         {
@@ -366,23 +391,18 @@ function redirectSubType( que, subType, sub )
     switch ( subType )
     {
         case "{": // object
-            return parseObjectSub( que, sub );
+            return parseObjectSub( que, sub, false );
         case "[": //choose
             return parseChooseSub( que, sub );
         case "<": //tbd
 
             break;
         case "(": //range
-            var temp = parseRangeSub( sub );
-            que.text += temp;
-            return temp;
+            return parseRangeSub( sub );;
         case "'": //literal
-            que.text += trimBracket( sub );
-            return parseLiteralSub( sub );
+            return trimBracket( sub );
         case "": //substitue
-            var temp = parseSubstituteSub( sub );
-            que.text += temp;
-            return temp;
+            return parseSubstituteSub( sub );
         default:
             console.error( "undefined sub type: " + subType );
     }
@@ -392,12 +412,12 @@ function redirectSubType( que, subType, sub )
 /**
  * @param {string} sub
  * @param {Object} obj
- * @param {string} name
+ * @param {Boolean} top is top level of subs
  */
-function parseObjectSub( que, sub )
+function parseObjectSub( que, sub, top )
 {
     sub = trimBracket( sub );
-    return makeObject( que, sub );
+    return makeObject( que, sub, top );
 };
 
 
@@ -447,10 +467,11 @@ function parseSubstituteSub( sub )
 /**
  * @param {string} sub
  * @param {Object} obj
+ * @param {boolean} top
  */
-function makeObject( que, sub )
+function makeObject( que, sub, top )
 {
-    return parseSubs( que, sub, true )
+    return parseSubs( que, sub, true, top )
 }
 
 
@@ -487,28 +508,16 @@ function makeSubstitution( sub )
 {
     var path = flatWords[sub];
     var isUnit = false;
-    
+
     if ( typeof path === "undefined" )
     {
         return "null";
     }
-    else
-    {
-        isUnit = path.indexOf('unit') > -1;
-    }
-    
+
     var choices = digArray( words, path );
     var rand = Math.floor( Math.random() * choices.length );
 
-    if ( isUnit )
-    {
-        var choice = choices;
-        return ' \\(' + choice + '\\)';
-    }
-    else
-    {
-        return choices[rand];
-    }
+    return choices[rand];
 }
 
 function digArray( wordsC, path )

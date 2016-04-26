@@ -158,6 +158,10 @@ form
     margin-bottom: 0;    
 }
 
+.question{
+    font-size: 1.1em;
+}
+
 .question-input
 {
     margin-top: 15px;
