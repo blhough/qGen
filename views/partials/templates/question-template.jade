@@ -1,7 +1,7 @@
 div.animate(ng-repeat='question in questions track by $index')
     .row.question-block
         .col
-            .panel.panel-default.question(ng-class='question.panelClass')
+            .panel.panel-primary.question(ng-class='question.panelClass')
                 .panel-heading.clearfix
                     span.panel-title Question 
                         span.question-number {{$index+1}}

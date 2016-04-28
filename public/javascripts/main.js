@@ -91,6 +91,7 @@ $( document ).ready( function ()
                 if ( !correct )
                 {
                     que.panelClass = "panel-danger";
+                    que.buttonClass = " btn-danger";
                     que.buttonText = "Try Again";
 
                     return;
