@@ -10,6 +10,8 @@ $( document ).ready( function ()
     $questionTemplate.css( 'display', 'block' );
     $questions = $( '#questions' );
     $chapter = $( '#chapter-select' );
+    
+    testEqual();
 
 
     var app = angular.module( 'questions', ['ngAnimate'] );
@@ -84,7 +86,7 @@ $( document ).ready( function ()
 
             for ( var i = 0; i < que.answer.length; i++ )
             {
-                var correct = equal( que.answer[i], que.entered[i], que.answer[i] / 10000 + .001 );
+                var correct = equal( que.answer[i], que.entered[i], que.tolerance[i] );
                 console.log( correct );
                 if ( !correct )
                 {
@@ -150,23 +152,42 @@ function generate( params )
 
 
 
-function equal( a, b, epsilon )
+function equal( a, b, tolerance )
 {
-    absA = Math.abs( a );
-    absB = Math.abs( b );
-    diff = Math.abs( a - b );
-    epsilon = Math.abs( epsilon );
-
+    var absA = Math.abs( a );
+    var absB = Math.abs( b );
+    var diff = Math.abs( a - b );
+    
+    console.log( "a: " + a + "  b: " + b , "  tol " + tolerance.delta + "  " + tolerance.percent + "  " + diff + "   " + diff / ( absA + absB ) / .02 );
+    
     if ( a == b )
     { // shortcut, handles infinities
         return true;
-    } else if ( a == 0 || b == 0 || diff < a.MIN_VALUE )
-    {
-        // a or b is zero or both are extremely close to it
-        // relative error is less meaningful here
-        return diff < ( epsilon * a.MIN_VALUE );
-    } else
-    { // use relative error
-        return diff / ( absA + absB ) < epsilon;
     }
+    else if ( diff <= tolerance.delta )
+    {
+        return true;
+    }
+    else if ( diff / ( absA + absB ) / .02 <= tolerance.percent )
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+function testEqual()
+{
+    console.log( equal( 0 , 0.00000002 ,  { delta: .01, percent: 2 } ) );
+    console.log( equal( 0 , 0.00002 ,  { delta: .01, percent: 2 }) );
+    console.log( equal( 0 , 0.00999 ,  { delta: .01, percent: 2 }) );
+    console.log( equal( 0 , 0.01 ,  { delta: .01, percent: 2 }) );
+    console.log( equal( 0 , 0.02 ,  { delta: .01, percent: 2 }) );
+    console.log( equal( 0 , 0.2 ,  { delta: .01, percent: 2 }) );
+    console.log( equal( 0.01 , 0.02 ,  { delta: .001, percent: 2 }) );
+    console.log( equal( 0.0000001 , 0.00000002 ,  { delta: .001, percent: 2 }) );
+    console.log( equal( 0.00001 , 0.02 ,  { delta: .001, percent: 2 }) );
+    console.log( equal( 0.00001 , 0.002 ,  { delta: .001, percent: 2 }) );
+    console.log( equal( 9999.01 , 9990.02 ,  { delta: .001, percent: 1 }) );
+    
 }

@@ -5,12 +5,12 @@ var title = "qGen | Generate";
 
 Math.degrees = function ( rad )
 {
-    return rad * ( 180 / Math.PI );
+    return rad * 180 / Math.PI;
 }
 
 Math.radians = function ( deg )
 {
-    return deg * ( Math.PI / 180 );
+    return deg * Math.PI / 180;
 }
 
 
@@ -130,6 +130,10 @@ var questionTemplate_ch2 = {
         { label: 'Vx', unit: 'm/s' },
         { label: 'Vy', unit: 'm/s' }
     ],
+    tolerance: [
+        { delta: .01, percent: .5 }, // +/- , +/-%
+        { delta: .01, percent: .5 } // +/- , +/-%
+    ],
     chapter: 2
 };
 
@@ -149,6 +153,9 @@ var questionTemplate_ch2b = {
     },
     attr: [
         { label: 'speed', unit: 'm/s' }
+    ],
+    tolerance: [
+        { delta: .01, percent: .5 } // +/- , +/-%
     ],
     chapter: 2
 };
@@ -190,6 +197,7 @@ function buildQuestion( chapter )
         formula: undefined,
         answer: [],
         attr: [],
+        tolerance: [],
         chapter: 0
     };
 
@@ -198,6 +206,7 @@ function buildQuestion( chapter )
     que.formula = tmp.formula;
     que.answer = calculateQuestionAsnwer( que, tmp );
     que.attr = tmp.attr;
+    que.tolerance = tmp.tolerance;
     que.chapter = tmp.chapter;
 
     return que;
