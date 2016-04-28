@@ -1,4 +1,4 @@
-div(ng-repeat='question in questions track by $index')
+div.animate(ng-repeat='question in questions track by $index')
     .row.question-block
         .col
             .panel.panel-default.question(ng-class='question.panelClass')
@@ -11,7 +11,7 @@ div(ng-repeat='question in questions track by $index')
                         span.glyphicon.glyphicon-remove
                     a.btn.btn-sm.pull-right(ng-click="generate(true,$index)" style='color:black')
                         span.glyphicon.glyphicon-refresh
-                .panel-body
+                .panel-body.fade-in
                     .row
                         .col.col-xs-12
                             p.question-text(mathjax-bind="question.text")

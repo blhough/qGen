@@ -12,7 +12,7 @@ $( document ).ready( function ()
     $chapter = $( '#chapter-select' );
 
 
-    var app = angular.module( 'questions', [] );
+    var app = angular.module( 'questions', ['ngAnimate'] );
 
     app.controller( 'questionCtrl', function ( $scope, $http, $timeout )
     {

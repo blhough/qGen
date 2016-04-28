@@ -188,3 +188,20 @@ form
     opacity: .65;
 }
 
+
+
+.animate .fade-in{
+-webkit-transition: all 1100ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
+   -moz-transition: all 1100ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
+     -o-transition: all 1100ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
+        transition: all 1100ms cubic-bezier(1.000, 0.010, 0.875, 0.000); /* custom */
+}
+
+.animate.ng-enter .fade-in {
+  opacity: 0;
+}
+
+.animate.ng-enter.ng-enter-active .fade-in{
+  opacity: 1;
+}
+
