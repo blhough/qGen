@@ -19,7 +19,7 @@ var app = express();
 app.use('/stylesheets',sassMiddleware({
     /* Options */
     src: path.join(__dirname, 'sass'),
-    dest: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public/stylesheets'),
     debug: true,
     outputStyle: 'compressed',
 }));
