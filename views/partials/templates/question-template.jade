@@ -22,7 +22,7 @@ div.animate(ng-repeat='question in questions track by $index')
                                     label(for='exampleInputAmount', style='margin-left:10px' mathjax-bind="attr.label") {{attr.label}}
                                     .input-group
                                         input.form-control(type='text', placeholder='{{attr.label}}' ng-model='question.entered[index2]' ng-disabled='question.buttonText == "correct"')
-                                        .input-group-addon(mathjax-bind="attr.unit") \({{attr.unit}}\)
+                                        .input-group-addon.question-unit(mathjax-bind="attr.unit") \({{attr.unit}}\)
                             .col(ng-class='"col-lg-"+question.width')
                                 .form-group(style="margin-bottom:0")
                                     label.visible-lg(style="visibility:hidden") fail

@@ -68,3 +68,5 @@ jspm_packages
 public/stylesheets/
 
 /resources
+
+dictionaryIndex.js

@@ -1,4 +1,10 @@
 var express = require( 'express' );
+var fs = require( 'fs' );
+
+var queTmps = require( './gen/questions' );
+var flatDict = require( './gen/dictionaryIndex' );
+var dict = require( './gen/dictionary' );
+
 var router = express.Router();
 
 var title = "qGen | Generate";
@@ -14,161 +20,9 @@ Math.radians = function ( deg )
 }
 
 
-var words =
-    {
-        "noun":
-        {
-            "ball":
-            [
-                "tennis ball",
-                "baseball",
-                "large ball"
-            ],
-
-            "vehicle":
-            {
-                "land_vehicle":
-                {
-                    "truck":
-                    [
-                        "truck",
-                        "garbage truck"
-                    ],
-
-                    "car":
-                    [
-                        "coupe",
-                        "sedan",
-                        "telsa"
-                    ]
-                },
-
-                "water_vehicle":
-                [
-                    "boat",
-                    "sailboat",
-                    "jetski"
-                ]
-            }
-        },
-
-        "unit":
-        {
-            "second":
-            [
-                "s"
-            ],
-
-            "degree":
-            [
-                "°"
-            ],
-
-            "velocity":
-            [
-                "m/s"
-            ],
-
-            "acceleration":
-            [
-                "m/s^2"
-            ]
-        },
-
-        "cardinal_direction":
-        [
-            "north",
-            "south",
-            "east",
-            "west"
-        ],
-
-        "ordinal_direction":
-        [
-            "northeast",
-            "southeast",
-            "northwest",
-            "southwest"
-        ]
-    };
-
-var flatWords = {};
-
-function flattenWords( words, path )
-{
-    if ( typeof words === "object" && !Array.isArray( words ) )
-    {
-
-        for ( var key in words )
-        {
-            if ( words.hasOwnProperty( key ) )
-            {
-                var arr = path.slice();
-                arr.push( key );
-                console.log( arr );
-                flattenWords( words[key], arr );
-            }
-        }
-    }
-    else
-    {
-        flatWords[path[path.length - 1]] = path;
-    }
-}
-
-var questionTemplate_ch2 = {
-    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|'north'} at {!velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {!acceleration|( .2, 2 ),unit:acceleration}, {!direction2|(0,360),units:degree} north of east. What is the {object1}'s velocity after {!time|(2,30),unit:second} when the wind stops?",
-    formula: function ()
-    {
-        var q = this.subs;
-        var vx = q.acceleration.value * q.time.value * Math.cos( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.radians( 90 ) );
-        var vy = q.acceleration.value * q.time.value * Math.sin( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.radians( 90 ) );
-
-        return [vx, vy];
-    },
-    attr: [
-        { label: 'Vx', unit: 'm/s' },
-        { label: 'Vy', unit: 'm/s' }
-    ],
-    tolerance: [
-        { delta: .01, percent: .5 }, // +/- , +/-%
-        { delta: .01, percent: .5 } // +/- , +/-%
-    ],
-    chapter: 2
-};
 
 
 
-
-var questionTemplate_ch2b = {
-    template: "A {object1|[water_vehicle,ball]} is traveling {direction1|'north'} at {!velocity|(1,[20,40,30,10]),unit:velocity}. A sudden gust of wind gives the {object1} an acceleration of {!acceleration|( .2, 2 ),unit:acceleration}, {!direction2|(0,360),units:degree} north of east. What is the {object1}'s speed after {!time|(2,30),unit:second} when the wind stops?",
-    formula: function ()
-    {
-        var q = this.subs;
-        var vx = q.acceleration.value * q.time.value * Math.cos( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.cos( Math.radians( 90 ) );
-        var vy = q.acceleration.value * q.time.value * Math.sin( Math.radians( q.direction2.value ) ) + q.velocity.value * Math.sin( Math.radians( 90 ) );
-        var speed = Math.sqrt( vx * vx + vy * vy );
-
-        return [speed];
-    },
-    attr: [
-        { label: 'speed', unit: 'm/s' }
-    ],
-    tolerance: [
-        { delta: .01, percent: .5 } // +/- , +/-%
-    ],
-    chapter: 2
-};
-
-
-var questionTemplates =
-    [
-        [],
-        [
-            questionTemplate_ch2,
-            questionTemplate_ch2b
-        ]
-    ];
 
 /**
  * @param {Object<question>} question
@@ -187,7 +41,7 @@ function calculateQuestionAsnwer( tmp )
  */
 function buildQuestion( chapter )
 {
-    var choices = questionTemplates[chapter - 1];
+    var choices = queTmps[chapter - 1];
     var rand = Math.floor( Math.random() * choices.length );
     var tmp = choices[rand];
 
@@ -515,7 +369,7 @@ function makeRange( num )
 
 function makeSubstitution( sub )
 {
-    var path = flatWords[sub];
+    var path = flatDict[sub];
     var isUnit = false;
 
     if ( typeof path === "undefined" )
@@ -523,7 +377,7 @@ function makeSubstitution( sub )
         return "null";
     }
 
-    var choices = digArray( words, path );
+    var choices = digArray( dict.dictionary, path );
     var rand = Math.floor( Math.random() * choices.length );
 
     return choices[rand];
@@ -650,7 +504,6 @@ function extractSubNames( subs )
 
 
 
-
 /* GET home page. */
 router.get( '/:category/:type', function ( req, res, next )
 {
@@ -660,10 +513,28 @@ router.get( '/:category/:type', function ( req, res, next )
     console.log( req.params.category + ' ' + req.params.type );
 });
 
+
+
+router.get( '/flattenDictionary', function ( req, res )
+{
+    var body = 'module.exports =';
+    var dictionary = require( './gen/dictionary' );
+    
+    body += JSON.stringify( dictionary.flattenDict() );
+    body += ';'
+
+    filePath = __dirname + '/gen/dictionaryIndex.js';
+
+    fs.writeFileSync( filePath, body );
+    
+    res.end();
+});
+
+
 /* GET home page. */
 router.get( '/:chapter', function ( req, res, next )
 {
-    flattenWords( words, [] );
+    dict.flattenDict();
     var preparedQuestion = buildQuestion( req.params.chapter );
     console.log( preparedQuestion );
     res.send( preparedQuestion );
@@ -675,7 +546,6 @@ router.get( '/', function ( req, res, next )
 {
     res.render( 'generator', { title: title });
 });
-
 
 
 module.exports = router;
