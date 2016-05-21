@@ -21,94 +21,200 @@ function flattenDict( dict, words, path )
 }
 
 var dict =
-{
-	"noun":
 	{
-		"ball":
-		[
-			"tennis ball",
-			"baseball",
-			"basketball",
-			"soccer ball",
-			"golf ball",
-			"wiffle ball",
-			"large ball"
-		],
-
-		"vehicle":
+		"noun":
 		{
-			"land_vehicle":
+			"ball":
+			[
+				"tennis ball",
+				"baseball",
+				"basketball",
+				"soccer ball",
+				"golf ball",
+				"wiffle ball",
+				"large ball"
+			],
+
+			"container":
+			[
+				"container",
+				"package",
+				"crate",
+				"bag"
+			],
+
+
+
+			"vehicle":
 			{
-				"truck":
+				"land_vehicle":
+				{
+					"truck":
+					[
+						"truck",
+						"garbage truck"
+					],
+
+					"car":
+					[
+						"coupe",
+						"sedan",
+						"telsa"
+					]
+				},
+
+				"water_vehicle":
 				[
-					"truck",
-					"garbage truck"
+					"boat",
+					"sailboat",
+					"jetski"
 				],
 
-				"car":
-				[
-					"coupe",
-					"sedan",
-					"telsa"
-				]
+				"air_vehicle":
+				{
+					"airplane":
+					[
+						"plane",
+						"airplane",
+						"cargo plane"
+					]
+				}
 			},
 
-			"water_vehicle":
+			"country":
 			[
-				"boat",
-				"sailboat",
-				"jetski"
+				'Afghanistan',
+				'Albania',
+				'Algeria',
+				'Antarctica',
+				'Argentina',
+				'Australia',
+				'Austria',
+				'Bahamas',
+				'Bangladesh',
+				'Barbados',
+				'Belarus',
+				'Belgium',
+				'Bermuda',
+				'Bolivia',
+				'Brazil',
+				'Bulgaria',
+				'Burundi',
+				'Cambodia',
+				'Cameroon',
+				'Canada',
+				'Chad',
+				'Chile',
+				'China',
+				'Colombia',
+				'Congo',
+				'Costa Rica',
+				'Cuba',
+				'Czech Republic',
+				'Denmark',
+				'Ecuador',
+				'Egypt',
+				'Eritrea',
+				'Estonia',
+				'Fiji',
+				'Finland',
+				'Georgia',
+				'Germany',
+				'Greenland', ,
+				'Guatemala',
+				'Hungary',
+				'Iceland',
+				'India',
+				'Indonesia',
+				'Italy',
+				'Madagascar',
+				'Mexico',
+				'Mongolia',
+				'Morocco',
+				'Nepal',
+				'New Zealand',
+				'Nicaragua',
+				'Paraguay',
+				'Peru',
+				'Philippines',
+				'Poland',
+				'Portugal',
+				'Puerto Rico',
+				'Saudi Arabia',
+				'Singapore',
+				'Slovakia',
+				'South Africa',
+				'Spain',
+				'Sudan',
+				'Suriname',
+				'Swaziland',
+				'Sweden',
+				'Switzerland',
+				'Thailand',
+				'Tunisia',
+				'Turkey',
+				'Tuvalu',
+				'Uganda',
+				'Ukraine',
+				'Uruguay',
+				'Uzbekistan',
+				'Vanuatu',
+				'Venezuela'
 			]
-		}
-	},
+		},
 
-	"unit":
-	{
-		"second":
+		"unit":
+		{
+			"second":
+			[
+				"s"
+			],
+
+			"degree":
+			[
+				"°"
+			],
+
+			"distance":
+			[
+				"m"
+			],
+
+			"velocity":
+			[
+				"m/s"
+			],
+
+			"acceleration":
+			[
+				"m/s^2"
+			]
+		},
+
+		"cardinal_direction":
 		[
-			"s"
+			"north",
+			"south",
+			"east",
+			"west"
 		],
 
-		"degree":
+		"ordinal_direction":
 		[
-			"°"
-		],
-
-		"velocity":
-		[
-			"m/s"
-		],
-
-		"acceleration":
-		[
-			"m/s^2"
+			"northeast",
+			"southeast",
+			"northwest",
+			"southwest"
 		]
-	},
+	};
 
-	"cardinal_direction":
-	[
-		"north",
-		"south",
-		"east",
-		"west"
-	],
-
-	"ordinal_direction":
-	[
-		"northeast",
-		"southeast",
-		"northwest",
-		"southwest"
-	]
-};
-
-module.exports = 
-{
-	flattenDict: function ()
+module.exports =
 	{
-		flatDict = {};
-		flattenDict( flatDict, dict, [] );
-		return flatDict;
-	},
-	dictionary: dict
-}
+		flattenDict: function ()
+		{
+			flatDict = {};
+			flattenDict( flatDict, dict, [] );
+			return flatDict;
+		},
+		dictionary: dict
+	}

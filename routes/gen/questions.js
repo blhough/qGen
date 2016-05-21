@@ -28,30 +28,6 @@ module.exports =
 
 		// CHAPTER 4 /////////////////////////////////////////////////
 		'kinematics': [
-			// section 4.2, #7 pg 110
-			/*
-			A model rocket is launched from rest with an upward acceleration of 6.00 m/s^2 and, due to a strong wind, a horizontal acceleration of 1.50 m/s^2. How far is the rocket from the launch pad 6.00s later when the rocket engine runs out of fuel? 
-			*/
-			{
-				template: "A {object|['model','toy','small']} rocket is launched from rest with an upward acceleration of {!acc1|(2,10,.5),unit:acceleration} and, due to a strong wind, a horizontal acceleration of {!acc2|(.5,3,.1),unit:acceleration}. How far is the rocket from the launch pad {!time|(2,17,1),unit:second} later when the rocket engine {a|['runs out of fuel','stops']}?",
-				formula: function ()
-				{
-					var q = this.subs;
-					var px = .5 * q.acc1.value * Math.pow( q.time.value, 2 );
-					var py = .5 * q.acc2.value * Math.pow( q.time.value, 2 );
-					var dist = Math.sqrt( px * px + py * py );
-					return dist;
-				},
-				attr: [
-					{ label: 'Distance', unit: 'm' }
-				],
-				tolerance: [
-					{ delta: .1, percent: .5 }, // +/- , +/-%
-				],
-				chapter: 'Kinematics'
-			},
-
-
 
 			// section 4.2, #6 pg 110
 			/*
@@ -74,8 +50,8 @@ module.exports =
 					{ label: 'Vy', unit: 'm/s' }
 				],
 				tolerance: [
-					{ delta: .01, percent: .5 }, // +/- , +/-%
-					{ delta: .01, percent: .5 } // +/- , +/-%
+					{ delta: .01, percent: .3 }, // +/- , +/-%
+					{ delta: .01, percent: .3 } // +/- , +/-%
 				],
 				chapter: 'Kinematics'
 			},
@@ -103,9 +79,87 @@ module.exports =
 					{ label: 'speed', unit: 'm/s' }
 				],
 				tolerance: [
-					{ delta: .01, percent: .5 } // +/- , +/-%
+					{ delta: .01, percent: .3 } // +/- , +/-%
 				],
 				chapter: '2D-Kinematics'
-			}
+			},
+			
+			
+			// section 4.2, #7 pg 110
+			/*
+			A model rocket is launched from rest with an upward acceleration of 6.00 m/s^2 and, due to a strong wind, a horizontal acceleration of 1.50 m/s^2. How far is the rocket from the launch pad 6.00s later when the rocket engine runs out of fuel? 
+			*/
+			{
+				template: "A {object|['model','toy','small']} rocket is launched from rest with an upward acceleration of {!acc1|(2,10,.5),unit:acceleration} and, due to a strong wind, a horizontal acceleration of {!acc2|(.5,3,.1),unit:acceleration}. How far is the rocket from the launch pad {!time|(2,17,1),unit:second} later when the rocket engine {a|['runs out of fuel','stops']}?",
+				formula: function ()
+				{
+					var q = this.subs;
+					var px = .5 * q.acc1.value * Math.pow( q.time.value, 2 );
+					var py = .5 * q.acc2.value * Math.pow( q.time.value, 2 );
+					var dist = Math.sqrt( px * px + py * py );
+					return [dist];
+				},
+				attr: [
+					{ label: 'Distance', unit: 'm' }
+				],
+				tolerance: [
+					{ delta: 1, percent: 1 }, // +/- , +/-%
+				],
+				chapter: 'Kinematics'
+			},	
+			
+			// section 4.3, #12 pg 111
+			/*
+			A ball thrown horizontally at 25m/s travels a horizontal distance of 50m before hitting the ground. From what height was the ball thrown?
+			*/
+			{
+				template: "A {obj|ball} thrown horizontally at {!vel|(10,40),unit:velocity} travels a horizontal distance of {!dist|(10,100,5),unit:distance} before hitting the ground. From what initial height was the ball thrown?",
+				formula: function ()
+				{
+					var q = this.subs;
+					var t = q.dist.value / q.vel.value;
+					var height = 0.5 * cnv.g * t * t;
+					
+					return [height];
+				},
+				attr: [
+					{ label: 'Height', unit: 'm' }
+				],
+				tolerance: [
+					{ delta: .5, percent: 1 }, // +/- , +/-%
+				],
+				chapter: 'Projectile Motion'
+			},
+			
+			
+			// section 4.3, #14 pg 111
+			/*
+			A supply plane needs to drop a package of food to scientists working on a glacier in Greenland. The plane flies 100m above the glacier at a speed of 150m/s. How far short of the target should it drop the package?
+			*/
+			{
+				template: "A {obj1|airplane} needs to drop a {obj2|container} of {obj3|['food','supplies']} to {a|['geologists','scientists']} working in a remote part of {obj4|country}. The plane flies {!dist1|(80,300,10),unit:distance} above the ground at a speed of {!vel1|(150,250,5),unit:velocity}. How far short of the target should it release the {obj2}?",
+				formula: function ()
+				{
+					var q = this.subs;
+					var t = Math.sqrt( 2 * q.dist1.value / cnv.g );
+					var px = q.vel1.value * t;
+					
+					return [px];
+				},
+				attr: [
+					{ label: 'Distance', unit: 'm' }
+				],
+				tolerance: [
+					{ delta: 5, percent: .3 }, // +/- , +/-%
+				],
+				chapter: 'Projectile Motion'
+			},
+			
+			
+			
+
+
+			
+			
 		]
 	};

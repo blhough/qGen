@@ -10,7 +10,7 @@ $( document ).ready( function ()
     $questionTemplate.css( 'display', 'block' );
     $questions = $( '#questions' );
     $chapter = $( '#chapter-select' );
-    
+
     testEqual();
 
 
@@ -21,6 +21,7 @@ $( document ).ready( function ()
         $scope.questions = [];
         $scope.questionCount = 0;
         $scope.questionID = 0;
+        $scope.timer;
 
         $scope.generate = function ( regen = false, index = 0 )
         {
@@ -88,19 +89,43 @@ $( document ).ready( function ()
             {
                 var correct = equal( que.answer[i], que.entered[i], que.tolerance[i] );
                 console.log( correct );
-                if ( !correct )
+
+
+                if ( correct == 0 || correct == 2 )
+                {
+                    if ( $scope.timer )
+                    {
+                        $timeout.cancel($scope.timer);
+                    }
+                    
+                    $scope.timer = $timeout( function ()
+                    {
+                        que.buttonText = "Check";
+                        que.buttonClass = " btn-info";
+                    }, 2000 );
+                }
+                if ( correct == 0 )
                 {
                     que.panelClass = "panel-danger";
                     que.buttonClass = " btn-danger";
-                    que.buttonText = "Try Again";
+                    que.buttonText = "Incorrect";
 
                     return;
                 }
+                else if ( correct == 2 )
+                {
+                    que.panelClass = "panel-warning";
+                    que.buttonClass = " btn-warning";
+                    que.buttonText = "Almost";
+
+                    return;
+                }
+
             }
 
             que.panelClass = "panel-success";
-            que.buttonClass = "disabled btn-success";
-            que.buttonText = "correct";
+            que.buttonClass = "btn-success";
+            que.buttonText = "Correct";
             que.correct = true;
 
             console.log( que.entered );
@@ -158,37 +183,46 @@ function equal( a, b, tolerance )
     var absA = Math.abs( a );
     var absB = Math.abs( b );
     var diff = Math.abs( a - b );
-    
-    console.log( "a: " + a + "  b: " + b , "  tol " + tolerance.delta + "  " + tolerance.percent + "  " + diff + "   " + diff / ( absA + absB ) / .02 );
-    
+
+    console.log( "a: " + a + "  b: " + b, "  tol " + tolerance.delta + "  " + tolerance.percent + "  " + diff + "   " + diff / ( absA + absB ) / .02 );
+
     if ( a == b )
     { // shortcut, handles infinities
-        return true;
+        return 1;
     }
     else if ( diff <= tolerance.delta )
     {
-        return true;
+        return 1;
     }
-    else if ( diff / ( absA + absB ) / .02 <= tolerance.percent )
+    else if ( diff / ( absA + absB ) / .005 <= tolerance.percent )
     {
-        return true;
+        return 1;
     }
-    
-    return false;
+
+    if ( diff <= tolerance.delta * 2 )
+    {
+        return 2;
+    }
+    else if ( diff / ( absA + absB ) / .005 <= tolerance.percent * 2 )
+    {
+        return 2;
+    }
+
+    return 0;
 }
 
 function testEqual()
 {
-    console.log( equal( 0 , 0.00000002 ,  { delta: .01, percent: 2 } ) );
-    console.log( equal( 0 , 0.00002 ,  { delta: .01, percent: 2 }) );
-    console.log( equal( 0 , 0.00999 ,  { delta: .01, percent: 2 }) );
-    console.log( equal( 0 , 0.01 ,  { delta: .01, percent: 2 }) );
-    console.log( equal( 0 , 0.02 ,  { delta: .01, percent: 2 }) );
-    console.log( equal( 0 , 0.2 ,  { delta: .01, percent: 2 }) );
-    console.log( equal( 0.01 , 0.02 ,  { delta: .001, percent: 2 }) );
-    console.log( equal( 0.0000001 , 0.00000002 ,  { delta: .001, percent: 2 }) );
-    console.log( equal( 0.00001 , 0.02 ,  { delta: .001, percent: 2 }) );
-    console.log( equal( 0.00001 , 0.002 ,  { delta: .001, percent: 2 }) );
-    console.log( equal( 9999.01 , 9990.02 ,  { delta: .001, percent: 1 }) );
-    
+    console.log( equal( 0, 0.00000002, { delta: .01, percent: 2 }) );
+    console.log( equal( 0, 0.00002, { delta: .01, percent: 2 }) );
+    console.log( equal( 0, 0.00999, { delta: .01, percent: 2 }) );
+    console.log( equal( 0, 0.01, { delta: .01, percent: 2 }) );
+    console.log( equal( 0, 0.02, { delta: .01, percent: 2 }) );
+    console.log( equal( 0, 0.2, { delta: .01, percent: 2 }) );
+    console.log( equal( 0.01, 0.02, { delta: .001, percent: 2 }) );
+    console.log( equal( 0.0000001, 0.00000002, { delta: .001, percent: 2 }) );
+    console.log( equal( 0.00001, 0.02, { delta: .001, percent: 2 }) );
+    console.log( equal( 0.00001, 0.002, { delta: .001, percent: 2 }) );
+    console.log( equal( 9999.01, 9990.02, { delta: .001, percent: 1 }) );
+
 }

@@ -1,6 +1,8 @@
 
 module.exports =
 	{
+		g: 9.80665,
+		
 		directionToRadian: function ( dir ) 
 		{
 			dir = dir.trim();

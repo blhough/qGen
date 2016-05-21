@@ -43,7 +43,7 @@ function buildQuestion( chapter )
 {
 	var choices = queTmps[chapter];
 	var rand = Math.floor( Math.random() * choices.length );
-	var tmp = choices[rand];
+	var tmp = choices[4];
 
 	var que = {
 		text: "",
