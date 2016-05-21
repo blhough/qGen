@@ -11,12 +11,12 @@ var title = "qGen | Generate";
 
 Math.degrees = function ( rad )
 {
-    return rad * 180 / Math.PI;
+	return rad * 180 / Math.PI;
 }
 
 Math.radians = function ( deg )
 {
-    return deg * Math.PI / 180;
+	return deg * Math.PI / 180;
 }
 
 
@@ -30,7 +30,7 @@ Math.radians = function ( deg )
  */
 function calculateQuestionAsnwer( tmp )
 {
-    return tmp.formula();
+	return tmp.formula();
 }
 
 
@@ -41,29 +41,29 @@ function calculateQuestionAsnwer( tmp )
  */
 function buildQuestion( chapter )
 {
-    var choices = queTmps[chapter - 1];
-    var rand = Math.floor( Math.random() * choices.length );
-    var tmp = choices[rand];
+	var choices = queTmps[chapter];
+	var rand = Math.floor( Math.random() * choices.length );
+	var tmp = choices[rand];
 
-    var que = {
-        text: "",
-        subs: {},
-        formula: undefined,
-        answer: [],
-        attr: [],
-        tolerance: [],
-        chapter: 0
-    };
+	var que = {
+		text: "",
+		subs: {},
+		formula: undefined,
+		answer: [],
+		attr: [],
+		tolerance: [],
+		chapter: 0
+	};
 
-    extractSubs( que, tmp.template );
+	extractSubs( que, tmp.template );
 
-    que.formula = tmp.formula;
-    que.answer = calculateQuestionAsnwer( que, tmp );
-    que.attr = tmp.attr;
-    que.tolerance = tmp.tolerance;
-    que.chapter = tmp.chapter;
+	que.formula = tmp.formula;
+	que.answer = calculateQuestionAsnwer( que, tmp );
+	que.attr = tmp.attr;
+	que.tolerance = tmp.tolerance;
+	que.chapter = tmp.chapter;
 
-    return que;
+	return que;
 }
 
 
@@ -76,79 +76,79 @@ function buildQuestion( chapter )
  */
 function extractSubs( que, tmp )
 {
-    var subs = que.subs;
-    var subName_reg = /\{([^\{\}\(\)\[\]\,\:\<\>\']+?)(\|(.+)|)\}/
-    var subName = "";
-    var depth = 0; // "{" increase depth
-    var subComplete = false;
-    var char = "";
-    var startIndex = 0;
+	var subs = que.subs;
+	var subName_reg = /\{([^\{\}\(\)\[\]\,\:\<\>\']+?)(\|(.+)|)\}/
+	var subName = "";
+	var depth = 0; // "{" increase depth
+	var subComplete = false;
+	var char = "";
+	var startIndex = 0;
 
-    for ( var index = 0; index < tmp.length; index++ )
-    {
-        char = tmp.charAt( index );
+	for ( var index = 0; index < tmp.length; index++ )
+	{
+		char = tmp.charAt( index );
 
-        if ( char == "{" )
-        {
-            if ( depth == 0 )
-            {
-                startIndex = index;
-            }
-            depth++;
-            subComplete = true;
-        }
-        else if ( char == "}" )
-        {
-            depth--;
-        }
+		if ( char == "{" )
+		{
+			if ( depth == 0 )
+			{
+				startIndex = index;
+			}
+			depth++;
+			subComplete = true;
+		}
+		else if ( char == "}" )
+		{
+			depth--;
+		}
 
-        if ( depth == 0 && subComplete == false )
-        {
-            que.text += char;
-        }
+		if ( depth == 0 && subComplete == false )
+		{
+			que.text += char;
+		}
 
-        if ( depth == 0 && subComplete == true )
-        {
-            var subText = subName_reg.exec( tmp.substring( startIndex, index + 1 ) );
-            subName = subText[1];
+		if ( depth == 0 && subComplete == true )
+		{
+			var subText = subName_reg.exec( tmp.substring( startIndex, index + 1 ) );
+			subName = subText[1];
 
-            if ( typeof subText[3] !== "undefined" && typeof subs[subName] === "undefined" )
-            {
-                var mathType = subName.charAt( 0 ) == '!'; //if is mathType
+			if ( typeof subText[3] !== "undefined" && typeof subs[subName] === "undefined" )
+			{
+				var mathType = subName.charAt( 0 ) == '!'; //if is mathType
 
-                if ( mathType )
-                {
-                    subName = subName.substring( 1, subName.length );
-                }
+				if ( mathType )
+				{
+					subName = subName.substring( 1, subName.length );
+				}
 
-                subs[subName] = parseObjectSub( que, "{" + subText[3] + "}", true );
+				subs[subName] = parseObjectSub( que, "{" + subText[3] + "}", true );
 
-                if ( mathType ) //if is mathType
-                {
-                    subs[subName].text = '\\(' + subs[subName].text + '\\)';
-                }
+				if ( mathType ) //if is mathType
+				{
+					subs[subName].text = '\\(' + subs[subName].text + '\\)';
+				}
 
-                que.text += subs[subName].text;
-            }
-            else if ( typeof subText[3] === "undefined" && typeof subs[subName] !== "undefined" )
-            {
-                que.text += subs[subName].text;
-            }
-            else
-            {
-                console.error( "Substitution undefined or redefined" );
-            }
+				que.text += subs[subName].text;
+			}
+			else if ( typeof subText[3] === "undefined" && typeof subs[subName] !== "undefined" )
+			{
+				que.text += subs[subName].text;
+			}
+			else
+			{
+				console.error( "Substitution undefined or redefined" );
+			}
 
-            subComplete = false;
-        }
+			subComplete = false;
+		}
 
 
-    }
+	}
 
-    if ( depth != 0 )
-    {
-        console.error( "unclosed brace in question template" );
-    }
+	if ( depth != 0 )
+	{
+		console.error( "unclosed brace in question template" );
+	}
 };
 
 
@@ -160,26 +160,26 @@ function extractSubs( que, tmp )
  */
 function parseSubs( que, sub, objectType, top )
 {
-    var subArray = commaSplit( sub );
-    var obj = { text: "" }
+	var subArray = commaSplit( sub );
+	var obj = { text: "" }
 
-    for ( var i = 0; i < subArray.length; i++ )
-    {
-        if ( objectType )
-        {
-            var extraction = extractVarName( subArray[i] );
-            var subType = parseSubType( extraction.sub );
+	for ( var i = 0; i < subArray.length; i++ )
+	{
+		if ( objectType )
+		{
+			var extraction = extractVarName( subArray[i] );
+			var subType = parseSubType( extraction.sub );
 
-            obj[extraction.varName] = redirectSubType( que, subType, extraction.sub );
-            obj.text += obj[extraction.varName];
-        }
-        else
-        {
-            obj = redirectSubType( que, parseSubType( sub ), sub );
-        }
-    }
+			obj[extraction.varName] = redirectSubType( que, subType, extraction.sub );
+			obj.text += obj[extraction.varName];
+		}
+		else
+		{
+			obj = redirectSubType( que, parseSubType( sub ), sub );
+		}
+	}
 
-    return obj;
+	return obj;
 };
 
 
@@ -195,19 +195,19 @@ function parseSubs( que, sub, objectType, top )
  */
 function extractVarName( sub )
 {
-    var varName_reg = /(^[^\{\}\(\)\[\]\,\:\<\>\']+?):/
-    var varName = varName_reg.exec( sub );
-    if ( varName == null )
-    {
-        varName = [];
-        varName[1] = "value";
-    }
-    else
-    {
-        sub = sub.substring( varName[0].length, sub.length );
-    }
+	var varName_reg = /(^[^\{\}\(\)\[\]\,\:\<\>\']+?):/
+	var varName = varName_reg.exec( sub );
+	if ( varName == null )
+	{
+		varName = [];
+		varName[1] = "value";
+	}
+	else
+	{
+		sub = sub.substring( varName[0].length, sub.length );
+	}
 
-    return { varName: varName[1], sub: sub };
+	return { varName: varName[1], sub: sub };
 }
 
 
@@ -217,25 +217,25 @@ function extractVarName( sub )
  */
 function parseSubType( sub )
 {
-    var type = "";
+	var type = "";
 
-    if ( typeof sub === "string" )
-    {
-        var char = sub.charAt( 0 );
+	if ( typeof sub === "string" )
+	{
+		var char = sub.charAt( 0 );
 
-        switch ( char )
-        {
-            case "{":
-            case "[":
-            case "<":
-            case "(":
-            case "'":
-                type = char;
-                break;
-        }
-    }
+		switch ( char )
+		{
+			case "{":
+			case "[":
+			case "<":
+			case "(":
+			case "'":
+				type = char;
+				break;
+		}
+	}
 
-    return type;
+	return type;
 };
 
 
@@ -249,26 +249,26 @@ function parseSubType( sub )
  */
 function redirectSubType( que, subType, sub )
 {
-    console.log( "sub Type: " + subType + " : " + sub );
+	console.log( "sub Type: " + subType + " : " + sub );
 
-    switch ( subType )
-    {
-        case "{": // object
-            return parseObjectSub( que, sub, false );
-        case "[": //choose
-            return parseChooseSub( que, sub );
-        case "<": //tbd
+	switch ( subType )
+	{
+		case "{": // object
+			return parseObjectSub( que, sub, false );
+		case "[": //choose
+			return parseChooseSub( que, sub );
+		case "<": //tbd
 
-            break;
-        case "(": //range
-            return parseRangeSub( sub );;
-        case "'": //literal
-            return trimBracket( sub );
-        case "": //substitue
-            return parseSubstituteSub( sub );
-        default:
-            console.error( "undefined sub type: " + subType );
-    }
+			break;
+		case "(": //range
+			return parseRangeSub( sub );;
+		case "'": //literal
+			return trimBracket( sub );
+		case "": //substitue
+			return parseSubstituteSub( sub );
+		default:
+			console.error( "undefined sub type: " + subType );
+	}
 };
 
 
@@ -279,8 +279,8 @@ function redirectSubType( que, subType, sub )
  */
 function parseObjectSub( que, sub, top )
 {
-    sub = trimBracket( sub );
-    return makeObject( que, sub, top );
+	sub = trimBracket( sub );
+	return makeObject( que, sub, top );
 };
 
 
@@ -291,11 +291,11 @@ function parseObjectSub( que, sub, top )
  */
 function parseChooseSub( que, sub )
 {
-    sub = trimBracket( sub );
+	sub = trimBracket( sub );
 
-    var choices = commaSplit( sub );
-    return makeChoice( que, choices );
-    //obj[name] = choices[Math.floor(( Math.random() * commaSplit.length ) )];
+	var choices = commaSplit( sub );
+	return makeChoice( que, choices );
+	//obj[name] = choices[Math.floor(( Math.random() * commaSplit.length ) )];
 };
 
 
@@ -304,8 +304,24 @@ function parseChooseSub( que, sub )
  */
 function parseRangeSub( sub )
 {
-    sub = trimBracket( sub );
-    return makeRange( 10 );
+	sub = trimBracket( sub );
+	console.log('9999   ' + sub);
+	
+   //var commaCount = (sub.match(/,/g) || []).length;
+   var value = commaSplit( sub );
+   
+   switch (value.length) {
+	   case 1:
+		   return makeRange( value[0] );
+	   case 2:
+		   return makeRange( value[1] , value[0] );
+	   case 3:
+		   return makeRange( value[1] , value[0] , value[2]);   
+	   default:
+		   break;
+   }
+	
+	return makeRange( 10 );
 };
 
 
@@ -314,7 +330,7 @@ function parseRangeSub( sub )
  */
 function parseLiteralSub( sub )
 {
-    return trimBracket( sub );
+	return trimBracket( sub );
 };
 
 
@@ -323,7 +339,7 @@ function parseLiteralSub( sub )
  */
 function parseSubstituteSub( sub )
 {
-    return makeSubstitution( sub );
+	return makeSubstitution( sub );
 };
 
 
@@ -334,7 +350,7 @@ function parseSubstituteSub( sub )
  */
 function makeObject( que, sub, top )
 {
-    return parseSubs( que, sub, true, top )
+	return parseSubs( que, sub, true, top )
 }
 
 
@@ -347,8 +363,8 @@ function makeObject( que, sub, top )
  */
 function makeChoice( que, choices )
 {
-    var choice = Math.floor( Math.random() * choices.length );
-    return parseSubs( que, choices[choice], false );
+	var choice = Math.floor( Math.random() * choices.length );
+	return parseSubs( que, choices[choice], false );
 }
 
 
@@ -356,10 +372,26 @@ function makeChoice( que, choices )
 
 
 
-function makeRange( num )
+function makeRange( high , low , interval )
 {
-    var rand = Math.floor( Math.random() * num );
-    return rand;
+	high = Number( high );
+	low = typeof low !== 'undefined' ? Number( low ) : 0;
+	interval = typeof interval !== 'undefined' ? Number( interval ) : 1;
+
+	var rand = Math.random() * (high - low + interval) + low;
+
+	if (interval != 0) 
+	{
+		rand /= interval;
+		rand = Math.floor(rand);
+		rand *= interval;
+	}
+	
+	rand *= 1000000;
+	rand = Math.floor( rand );
+	rand /= 1000000;
+
+	return rand;
 }
 
 
@@ -369,32 +401,32 @@ function makeRange( num )
 
 function makeSubstitution( sub )
 {
-    var path = flatDict[sub];
-    var isUnit = false;
+	var path = flatDict[sub];
+	var isUnit = false;
 
-    if ( typeof path === "undefined" )
-    {
-        return "null";
-    }
+	if ( typeof path === "undefined" )
+	{
+		return "null";
+	}
 
-    var choices = digArray( dict.dictionary, path );
-    var rand = Math.floor( Math.random() * choices.length );
+	var choices = digArray( dict.dictionary, path );
+	var rand = Math.floor( Math.random() * choices.length );
 
-    return choices[rand];
+	return choices[rand];
 }
 
 function digArray( wordsC, path )
 {
-    if ( path.length > 1 )
-    {
-        var arr = path.slice();
-        arr.shift();
-        return digArray( wordsC[path[0]], arr );
-    }
-    else
-    {
-        return wordsC[path[0]];
-    }
+	if ( path.length > 1 )
+	{
+		var arr = path.slice();
+		arr.shift();
+		return digArray( wordsC[path[0]], arr );
+	}
+	else
+	{
+		return wordsC[path[0]];
+	}
 }
 
 
@@ -407,22 +439,22 @@ function digArray( wordsC, path )
  */
 function trimBracket( text )
 {
-    var char = text.charAt( 0 );
+	var char = text.charAt( 0 );
 
-    switch ( char )
-    {
-        case "{":
-        case "[":
-        case "<":
-        case "(":
-        case "'":
-            text = text.substring( 1, text.length - 1 ); //trim brackets
-            break;
-        default:
-            break;
-    }
+	switch ( char )
+	{
+		case "{":
+		case "[":
+		case "<":
+		case "(":
+		case "'":
+			text = text.substring( 1, text.length - 1 ); //trim brackets
+			break;
+		default:
+			break;
+	}
 
-    return text;
+	return text;
 }
 
 
@@ -432,74 +464,74 @@ function trimBracket( text )
  */
 function commaSplit( sub )
 {
-    var counter = 0;
-    var quote = false;
-    var char = "";
-    var subArray = [];
-    var index = 0;
+	var counter = 0;
+	var quote = false;
+	var char = "";
+	var subArray = [];
+	var index = 0;
 
-    for ( var i = 0; i < sub.length; i++ )
-    {
-        char = sub.charAt( i );
+	for ( var i = 0; i < sub.length; i++ )
+	{
+		char = sub.charAt( i );
 
-        switch ( char )
-        {
-            case "{":
-            case "[":
-            case "<":
-            case "(":
-                if ( quote == false )
-                {
-                    counter++;
-                }
-                break;
+		switch ( char )
+		{
+			case "{":
+			case "[":
+			case "<":
+			case "(":
+				if ( quote == false )
+				{
+					counter++;
+				}
+				break;
 
-            case "}":
-            case "]":
-            case ">":
-            case ")":
-                if ( quote == false )
-                {
-                    counter--;
-                }
-                break;
+			case "}":
+			case "]":
+			case ">":
+			case ")":
+				if ( quote == false )
+				{
+					counter--;
+				}
+				break;
 
-            case "'":
-                quote = !quote;
-                break;
+			case "'":
+				quote = !quote;
+				break;
 
-            case ",":
-                if ( counter == 0 && quote == false )
-                {
-                    subArray[index++] = sub.substring( 0, i );
-                    sub = sub.substring( i + 1, sub.length );
-                    i = -1;
-                }
-                break;
-        }
-    }
+			case ",":
+				if ( counter == 0 && quote == false )
+				{
+					subArray[index++] = sub.substring( 0, i ).trim();
+					sub = sub.substring( i + 1, sub.length );
+					i = -1;
+				}
+				break;
+		}
+	}
 
-    subArray[index] = sub;
-    return subArray;
+	subArray[index] = sub.trim();
+	return subArray;
 };
 
 
 
 function extractSubNames( subs )
 {
-    var subName_reg = /\{(.*?)(:(.*?)\}|\})/;
-    var subNames;
-    var question = {};
-    subs.forEach( function ( sub )
-    {
-        subNames = subName_reg.exec( sub );
-        if ( subNames[3] )
-        {
+	var subName_reg = /\{(.*?)(:(.*?)\}|\})/;
+	var subNames;
+	var question = {};
+	subs.forEach( function ( sub )
+	{
+		subNames = subName_reg.exec( sub );
+		if ( subNames[3] )
+		{
 
-            question[subNames[1]] = subNames[3];
-        }
-    });
-    console.log( question );
+			question[subNames[1]] = subNames[3];
+		}
+	});
+	console.log( question );
 }
 
 
@@ -507,44 +539,44 @@ function extractSubNames( subs )
 /* GET home page. */
 router.get( '/:category/:type', function ( req, res, next )
 {
-    console.log( extractSubs( questionTemplate_ch2.subs, questionTemplate_ch2.template ) );
-    // console.log(subs);
-    res.render( 'generator', { title: title, question: questionTemplate_ch2 });
-    console.log( req.params.category + ' ' + req.params.type );
+	console.log( extractSubs( questionTemplate_ch2.subs, questionTemplate_ch2.template ) );
+	// console.log(subs);
+	res.render( 'generator', { title: title, question: questionTemplate_ch2 });
+	console.log( req.params.category + ' ' + req.params.type );
 });
 
 
 
 router.get( '/flattenDictionary', function ( req, res )
 {
-    var body = 'module.exports =';
-    var dictionary = require( './gen/dictionary' );
-    
-    body += JSON.stringify( dictionary.flattenDict() );
-    body += ';'
+	var body = 'module.exports =';
+	var dictionary = require( './gen/dictionary' );
+	
+	body += JSON.stringify( dictionary.flattenDict() );
+	body += ';'
 
-    filePath = __dirname + '/gen/dictionaryIndex.js';
+	filePath = __dirname + '/gen/dictionaryIndex.js';
 
-    fs.writeFileSync( filePath, body );
-    
-    res.end();
+	fs.writeFileSync( filePath, body );
+	
+	res.end();
 });
 
 
 /* GET home page. */
 router.get( '/:chapter', function ( req, res, next )
 {
-    dict.flattenDict();
-    var preparedQuestion = buildQuestion( req.params.chapter );
-    console.log( preparedQuestion );
-    res.send( preparedQuestion );
+	dict.flattenDict();
+	var preparedQuestion = buildQuestion( req.params.chapter );
+	console.log( preparedQuestion );
+	res.send( preparedQuestion );
 });
 
 
 /* GET home page. */
 router.get( '/', function ( req, res, next )
 {
-    res.render( 'generator', { title: title });
+	res.render( 'generator', { title: title });
 });
 
 
