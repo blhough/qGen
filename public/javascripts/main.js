@@ -3,6 +3,7 @@ var $questionTemplate;
 var $questions;
 var $section;
 var questionsLoaded = false;
+var small = false;
 
 $( document ).ready( function ()
 {
@@ -274,4 +275,35 @@ $( document ).ready( function ()
 			);
 		}
 	};
+	
+	
+	var updateResizeClasses = function()
+	{
+		console.log(window.innerWidth);
+		var w =  window.innerWidth;
+		
+		if( !small && w < 768 )
+		{
+			small = true;
+			$('.gen-button').addClass('btn-block');
+			$('.gen-button').addClass('btn-lg');
+			$('.gen-input').addClass('input-lg');
+			
+		}
+		else if ( small && w >= 768 )
+		{
+			small = false;
+			$('.gen-button').removeClass('btn-block');
+			$('.gen-button').removeClass('btn-lg');
+			$('.gen-input').removeClass('input-lg');
+		}
+		
+		
+	};
+	
+	$(window).on('resize', function () {
+		updateResizeClasses();
+	});
+	
+	updateResizeClasses();
 });

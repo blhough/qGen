@@ -11,6 +11,10 @@ html{
     font-family: 'Asap', sans-serif;
 }
 
+body{
+    margin: 0;
+}
+
 $transition-time: .3s;
 
 #wrapper, #sidebar-wrapper {
@@ -153,13 +157,6 @@ $transition-time: .3s;
     }
 }
 
-   @media (max-width : 767px) {
-
-    .gen-button {
-         float: right!important;
-         
-    }
-}
 
 
 
@@ -370,6 +367,13 @@ $btn-color: #FFF;
     border-bottom-color: $danger-color;
 }
 
+.gen-button{
+    margin-left: 10px;
+}
+
+.btn-block{
+    margin-left: 0;
+}
 
 
 
