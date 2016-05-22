@@ -167,6 +167,7 @@ $( document ).ready( function ()
 				{
 					$scope.questions = simpleStorage.get( "Questions" );
 					$scope.questionId = $scope.questionCount = $scope.questions.length;
+					updateShowGenBtn( $scope.questionCount );
 				}
 			}
 			catch ( err )
