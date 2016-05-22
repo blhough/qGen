@@ -1,12 +1,12 @@
-div.animate(ng-repeat='question in questions track by $index')
+div.animate(ng-repeat='question in questions track by $index' newq-bind)
     .row.question-block
         .col
             .panel.panel-primary.question(ng-class='question.panelClass')
                 .panel-heading.clearfix
                     span.panel-title Question 
                         span.question-number {{$index+1}}
-                    span.panel-title.panel-subtitle Chapter 
-                        span.chapter-number {{question.chapter}}
+                    span.panel-title.panel-subtitle 
+                        span.chapter-number {{question.section}}
                     a.btn.btn-sm.pull-right(ng-click="remove($index)" style='color:black')
                         span.glyphicon.glyphicon-remove
                     a.btn.btn-sm.pull-right(ng-click="generate(true,$index)" style='color:black')
@@ -16,7 +16,7 @@ div.animate(ng-repeat='question in questions track by $index')
                         .col.col-xs-12
                             p.question-text(mathjax-bind="question.text")
                     .row
-                        form(ng-submit='checkAnswer($index)')
+                        form.answer-field(ng-submit='checkAnswer($index)')
                             .col.col-xs-12(ng-init="index2 = $index" ng-repeat='attr in question.attr track by $index' ng-class='"col-lg-"+question.width')
                                 .form-group.question-input(ng-class='{disabled: question.correct}')
                                     label(for='exampleInputAmount', style='margin-left:10px' mathjax-bind="attr.label") {{attr.label}}

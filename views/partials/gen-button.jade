@@ -1,7 +1,6 @@
 .row
     .col
-        form.form-inline
+        form.form-inline.form-generate
             .form-group
-                select.form-control#chapter-select(ng-init="chapter = 2"  ng-model="chapter" )
-                        option(value='kinematics') Kinematics
+                select.form-control#chapter-select(ng-init="section = sections[0]"  ng-model="section" ng-options="sect.name for sect in sections track by sect.value" )
             a.btn.btn-primary(type='button' ng-click='generate()' style='margin-left:5px') Generate

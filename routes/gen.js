@@ -12,15 +12,16 @@ var title = "qGen | Generate";
 Math.degrees = function ( rad )
 {
 	return rad * 180 / Math.PI;
-}
+};
 
 Math.radians = function ( deg )
 {
 	return deg * Math.PI / 180;
-}
+};
 
-
-
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
 
 
 
@@ -39,11 +40,17 @@ function calculateQuestionAsnwer( tmp )
  * @param {Object<question>} question
  * @return {Object}
  */
-function buildQuestion( chapter )
+function buildQuestion( section , tag )
 {
-	var choices = queTmps[chapter];
-	var rand = Math.floor( Math.random() * choices.length );
-	var tmp = choices[4];
+	section = 'equilibriums';
+	
+	var choices = queTmps[section];
+	
+	tag = typeof tag !== 'undefined' ? tag : Math.floor( Math.random() * choices.length );
+	
+	tag = 2;
+	
+	var tmp = choices[tag];
 
 	var que = {
 		text: "",
@@ -52,7 +59,9 @@ function buildQuestion( chapter )
 		answer: [],
 		attr: [],
 		tolerance: [],
-		chapter: 0
+		section: "",
+		//subsection: "",
+		tag: 0,
 	};
 
 	extractSubs( que, tmp.template );
@@ -61,7 +70,9 @@ function buildQuestion( chapter )
 	que.answer = calculateQuestionAsnwer( que, tmp );
 	que.attr = tmp.attr;
 	que.tolerance = tmp.tolerance;
-	que.chapter = tmp.chapter;
+	que.section = section.capitalize();
+	//que.subsection = tmp.subsection;
+	que.tag = tag;
 
 	return que;
 }
@@ -536,15 +547,6 @@ function extractSubNames( subs )
 
 
 
-/* GET home page. */
-router.get( '/:category/:type', function ( req, res, next )
-{
-	console.log( extractSubs( questionTemplate_ch2.subs, questionTemplate_ch2.template ) );
-	// console.log(subs);
-	res.render( 'generator', { title: title, question: questionTemplate_ch2 });
-	console.log( req.params.category + ' ' + req.params.type );
-});
-
 
 
 router.get( '/flattenDictionary', function ( req, res )
@@ -564,11 +566,18 @@ router.get( '/flattenDictionary', function ( req, res )
 
 
 /* GET home page. */
-router.get( '/:chapter', function ( req, res, next )
+router.get( '/:section', function ( req, res, next )
 {
-	dict.flattenDict();
-	var preparedQuestion = buildQuestion( req.params.chapter );
-	console.log( preparedQuestion );
+	var preparedQuestion = buildQuestion( req.params.section );
+	//console.log( preparedQuestion );
+	res.send( preparedQuestion );
+});
+
+
+router.get( '/:section/:tag', function ( req, res, next )
+{
+	var preparedQuestion = buildQuestion( req.params.section , req.params.tag );
+	//console.log( preparedQuestion );
 	res.send( preparedQuestion );
 });
 

@@ -43,8 +43,6 @@ var dict =
 				"bag"
 			],
 
-
-
 			"vehicle":
 			{
 				"land_vehicle":
@@ -188,7 +186,17 @@ var dict =
 			"acceleration":
 			[
 				"m/s^2"
-			]
+			],
+			
+			"force":
+			[
+				"N"
+			],
+			
+			"mass":
+			[
+				"kg"
+			],
 		},
 
 		"cardinal_direction":

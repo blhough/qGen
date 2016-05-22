@@ -11,14 +11,14 @@ html{
     font-family: 'Asap', sans-serif;
 }
 
+$transition-time: .3s;
 
-
-#wrapper {
+#wrapper, #sidebar-wrapper {
     padding-left: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all $transition-time ease;
+    -moz-transition: all $transition-time ease;
+    -o-transition: all $transition-time ease;
+    transition: all $transition-time ease;
 }
 
 #wrapper.toggled {
@@ -34,10 +34,6 @@ html{
     margin-left: -200px;
     overflow-y: auto;
     background: #000;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -156,14 +152,15 @@ html{
 .panel-subtitle
 {
 	font-size: 90%;	
-	opacity: .5;
+	opacity: .9;
 	margin-left: 2%;
 }
 
-form
+.answer-field
 {
     margin-bottom: 0;    
 }
+
 
 .question{
     font-size: 1.1em;
@@ -183,6 +180,7 @@ form
 
 
 
+
 .form-control[disabled], fieldset[disabled] .form-control {
     cursor: default;
 }
@@ -198,10 +196,10 @@ form
 
 
 .animate .fade-in{
--webkit-transition: all 1100ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
-   -moz-transition: all 1100ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
-     -o-transition: all 1100ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
-        transition: all 1100ms cubic-bezier(1.000, 0.010, 0.875, 0.000); /* custom */
+-webkit-transition: all 500ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
+   -moz-transition: all 500ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
+     -o-transition: all 500ms cubic-bezier(1.000, 0.010, 0.875, 0.000); 
+        transition: all 500ms cubic-bezier(1.000, 0.010, 0.875, 0.000); /* custom */
 }
 
 .animate.ng-enter .fade-in {
@@ -224,7 +222,7 @@ form
 
 $primary-color: #76c9f3;
 $danger-color: #ff4e5a;
-$success-color: #88ff63;
+$success-color: #7FDE61;
 $warning-color: #ffa449;
 
 $panel-heading-color: #FFF;

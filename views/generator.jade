@@ -4,6 +4,7 @@ block append scripts
     script(src='/javascripts/main.js')
     script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js').    
     script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js')
+    script(src='https://cdn.jsdelivr.net/simplestorage/0.2.1/simpleStorage.min.js')
     script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML')
     script.
         type="text/x-mathjax-config"> MathJax.Hub.Config({
@@ -12,10 +13,12 @@ block append scripts
             processEscapes: true,
             },
             showMathMenu: false,
+            showProcessingMessages: false,
             menuSettings: { inTabOrder: false }
         });
-
+        
 block content
     #questions(ng-app="questions" ng-controller="questionCtrl")
+        include partials/gen-button
         question-template
         include partials/gen-button
