@@ -42,13 +42,13 @@ function calculateQuestionAsnwer( tmp )
  */
 function buildQuestion( section , tag )
 {
-	section = 'equilibriums';
+	//section = 'equilibriums';
 	
 	var choices = queTmps[section];
 	
 	tag = typeof tag !== 'undefined' ? tag : Math.floor( Math.random() * choices.length );
 	
-	tag = 2;
+	//tag = 2;
 	
 	var tmp = choices[tag];
 

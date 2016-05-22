@@ -4,6 +4,7 @@ var $questions;
 var $section;
 var questionsLoaded = false;
 var small = false;
+var $genForm;
 
 $( document ).ready( function ()
 {
@@ -13,6 +14,8 @@ $( document ).ready( function ()
 	$questionTemplate.css( 'display', 'block' );
 	$questions = $( '#questions' );
 	$section = $( '#chapter-select' );
+	$genForm = $('#questions>.row:last-child');
+	 $('#questions>.row:first-child').show();
 	//testEqual();
 
 
@@ -28,7 +31,7 @@ $( document ).ready( function ()
 		$scope.sections = [
 			{ name: 'Kinematics', value: 'kinematics' },
 			{ name: 'Equilibriums', value: 'equilibriums' },
-			{ name: 'Dynamics', value: 'dynamics' },
+			//{ name: 'Dynamics', value: 'dynamics' },
 		];
 
 		$scope.generate = function ( regen = false, index = 0 )
@@ -47,12 +50,12 @@ $( document ).ready( function ()
 				que.buttonClass = "";
 				que.panelClass = "";
 				que.correct = false;
-
-
+				
 				if ( !regen )
 				{
 					$scope.questionCount++;
 					$scope.questionID++;
+					updateShowGenBtn( $scope.questionCount );
 				}
 
 				var width = que.attr.length;
@@ -94,6 +97,7 @@ $( document ).ready( function ()
 			$scope.questions.splice( index, 1 );
 			$scope.questionCount--;
 			$scope.saveQuestions();
+			updateShowGenBtn( $scope.questionCount );
 		};
 
 		$scope.checkAnswer = function ( index )
@@ -170,7 +174,7 @@ $( document ).ready( function ()
 				simpleStorage.flush();
 			}
 
-			setTimeout( function(){ questionsLoaded = true; } , 200 );
+			setTimeout( function(){ questionsLoaded = true; } , 1000 );
 		};
 
 		$scope.loadQuestions();
@@ -277,9 +281,18 @@ $( document ).ready( function ()
 	};
 	
 	
+	var updateShowGenBtn = function( num )
+	{
+		if (num > 0) {
+			$genForm.show();
+		}
+		else{
+			$genForm.hide();
+		}
+	}
+	
 	var updateResizeClasses = function()
 	{
-		console.log(window.innerWidth);
 		var w =  window.innerWidth;
 		
 		if( !small && w < 768 )
@@ -297,8 +310,7 @@ $( document ).ready( function ()
 			$('.gen-button').removeClass('btn-lg');
 			$('.gen-input').removeClass('input-lg');
 		}
-		
-		
+	
 	};
 	
 	$(window).on('resize', function () {
