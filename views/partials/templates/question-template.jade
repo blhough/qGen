@@ -27,5 +27,5 @@ div.animate(ng-repeat='question in questions track by $index' newq-bind)
                                 .form-group(style="margin-bottom:0")
                                     label.visible-lg(style="visibility:hidden") fail
                                     //.input-group
-                                    button.btn.btn-primary.question-input(type='submit'  ng-class='question.buttonClass') {{question.buttonText}}
+                                    button.btn.btn-primary.question-input(type='submit'  ng-class="question.buttonClass, {}") {{question.buttonText}}
 

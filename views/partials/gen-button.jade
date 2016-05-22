@@ -1,6 +1,6 @@
 .row
     .col
-        form.form-inline.form-generate
+        form.form-inline.form-generate.clearfix
             .form-group
                 select.form-control#chapter-select(ng-init="section = sections[0]"  ng-model="section" ng-options="sect.name for sect in sections track by sect.value" )
-            a.btn.btn-primary(type='button' ng-click='generate()' style='margin-left:5px') Generate
+            a.btn.btn-primary.gen-button.btn-lg.btn-block(type='button' ng-click='generate()' style='margin-left:5px') Generate
